@@ -1,5 +1,7 @@
 from django.db import models
+from django.db.models import Q
 import datetime
+
 
 
 class Team(models.Model):
@@ -19,14 +21,25 @@ class Team(models.Model):
     current_price = models.IntegerField(help_text = "Current Price of the team",
                                         verbose_name = "Current Price")
 
-    def nearest(items, pivot):
-        return min(items, key=lambda x: abs(x - pivot))
+    def is_trading_open(self):
+        try:
+            time_of_cut_off = self.next_fixture() - datetime.timedelta(minutes=15)
+            if datetime.datetime.now(datetime.timezone.utc) > time_of_cut_off:
+                return False
+            else:
+                return True
+        except TypeError:
+            return False
 
     def next_fixture(self):
-        match_1 = Fixture.objects.filter(team_1=self.team_code).order_by('date_time_fixture')
-        match_2 = Fixture.objects.filter(team_1=self.team_code).order_by('date_time_fixture')
-
-        return match_1
+        if self.eliminated:
+            return "N/A"
+        else:
+            try:
+                next_match = Fixture.objects.filter(Q(team_1=self.team_code) | Q(team_2=self.team_code)).filter(winner = None).order_by('date_time_fixture').values('date_time_fixture')[0]['date_time_fixture']
+                return next_match
+            except IndexError:
+                return "N/A"
 
     def __str__(self):
 
@@ -96,26 +109,12 @@ class Fixture(models.Model):
     team_2_goals = models.IntegerField(help_text="Number of goals Team 2 scored",
                                        verbose_name="Team 2 goals", null=True, blank=True)
 
-    winner = models.CharField(max_length = 4, null=True, blank=True, choices=((team_1, "Team 1"), (team_2, "Team 2"),
+    winner = models.CharField(max_length = 4, null=True, blank=True, choices=(('1', "Team 1"), ('2', "Team 2"),
                                        ("draw", "Draw"),(None, "Null")))
-
-    # planning to build a small function here that updates the currently in play
-    # value to true if the date time of now is less than 15 mins from the fixture
-    # then, will have in the Team class - look to see if there are any Fixture
-    # for the team in which the currently in play is TRUE and winner is NULL
-    # if so, then trading is suspended
-
-    def is_fixture_in_play(date_time_fixture):
-        in_play = False
-
-        if datetime.now() > (date_time_fixture - datetime.timedelta(minutes = -15)):
-            in_play = True
-
-        return in_play
 
     def __str__(self):
 
-        return str(self.date_time_fixture)
+        return self.date_time_fixture.strftime('%d/%m/%Y - %H:%M') + ' - ' + str(self.team_1) + ' vs ' + str(self.team_2)
 
 
 class ClosingValue(models.Model):
@@ -129,6 +128,14 @@ class ClosingValue(models.Model):
     price = models.IntegerField(help_text="Price",
                                         verbose_name="Price")
 
+    def deposit_current_price(self):
+        latest_price = Investment.generate_latest_price(self.team_code)
+        ClosingValue.objects.create(team_code=self.team_code, price=latest_price)
+
+
+
     def __str__(self):
 
-        return self.team_code, self.price
+        return self.date_time.strftime('%d/%m/%Y') + ' - ' + str(self.team_code)+ ' - ' + str(self.price)
+
+current_team = Team.objects.get(team_code="POR")
