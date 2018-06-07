@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    {% block title %}<title>Team Exchange 2018</title>{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+  </head>
+  <body>
+    {% block header %}
+    <div class="pure-menu pure-menu-horizontal">
+    <ul class="pure-menu-list">
+        <li class="pure-menu-item"><a href="/" class="pure-menu-link">Exchange</a></li>
+        <li class="pure-menu-item">{{user}}</a></li>
+        <li class="pure-menu-item">{{wallet}}</a></li>
+        <li class="pure-menu-item">{{investments}}</a></li>
+    </ul>
+</div>
+<div class='main'>
+{% endblock %}
+{% block content %}
+{% endblock %}
+</div>
+  </body>
+</html>
