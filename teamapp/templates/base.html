@@ -9,17 +9,26 @@
 
   </head>
   <body>
+      {% if user.is_authenticated %}
     {% block header %}
+
     <div class="pure-menu pure-menu-horizontal">
     <ul class="pure-menu-list">
         <li class="pure-menu-item"><a href="/" class="pure-menu-link">Exchange</a></li>
-        <li class="pure-menu-item">{{user}}</a></li>
-        <li class="pure-menu-item">{{wallet}}</a></li>
-        <li class="pure-menu-item">{{investments}}</a></li>
+        <li class="pure-menu-item"><p>{{user.first_name}} {{user.last_name}}</p></li>
+        <li class="pure-menu-item">
+          <div class="profile-finance">
+            <li><p>Wallet:  {{wallet}}</p></li>
+            <li><p>Investments:  {{investments}}</p></li>
+          </div>
+        </li>
+
     </ul>
 </div>
-<div class='main'>
 {% endblock %}
+{% endif %}
+<div class='main'>
+
 {% block content %}
 {% endblock %}
 </div>

@@ -1,12 +1,50 @@
 {% extends "base.html" %}
 {% block content %}
+<div id='team_data'>
+<div id='team_headline'>
+  <div>
+<h1> {{team_code}}</h1>
+<h3> {{current_price}}</h3>
+</div>
+<img class='pure-img' src='{{flag}}'>
+</div>
+<div id='team_chart'>
+</div>
+{% if not trading_open %}
+<h1> Sorry, trading is currently closed on this team </h1>
+<h3> The current value invested in this team is {{total_value}}</h3>
+{% else %}
+<div id='team_form'>
+  <h2> Buy and sell</h2>
+  <p> Your wallet: {{wallet}}</p>
+  <!--Put in here how many shares they own in this team-->
+<form class='pure-form' action='' method='post'>
 
-<p>{{team}}</p>
+  {% csrf_token %}
 
-<!-- {% for mykey,myvalue in mydict.items %}
+  <table>
+    {{form}}
+  </table>
 
-    {{ mykey }} : {{ myvalue }}
+          <input type="submit" value="Submit" />
 
-{% endfor %} -->
+  </form>
+  </div>
+  {%endif%}
+  </div>
 
-{% endblock %}
+  {% endblock %}
+<!-- <fieldset>
+  <input type="text" placeholder="Number of shares">
+  <label for="buy" class="pure-radio">
+         <input id="buy" type="radio" name="optionsRadios" value="1" checked>
+         Buy
+     </label>
+
+     <label for="option-three" class="pure-radio">
+         <input id="option-three" type="radio" name="optionsRadios" value="-1">
+         Sell
+     </label>
+  <p> @ {{current_price}}</p>
+          <button type="submit" class="pure-button pure-button-primary">Submit</button>
+</fieldset> -->

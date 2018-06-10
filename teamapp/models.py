@@ -6,15 +6,14 @@ from django.db.models.signals import post_save, pre_save, post_init
 from django.dispatch import receiver
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ObjectDoesNotExist
-
+from decimal import *
 
 class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    total_invested = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    total_invested = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     cash_avaliable = models.DecimalField(max_digits=5, decimal_places=2,
-                                         null=True)
-                                         # validators=[MinValueValidator('0.01')])
+                                         default=0)
 
     def users_teams_investments(self):
 
@@ -27,9 +26,11 @@ class Profile(models.Model):
 
         return user_teams
 
-    def users_total_investments(user_teams):
+    def users_total_investments(self):
 
         total_investment = 0
+
+        user_teams = self.users_teams_investments()
 
         for key, quant in user_teams.items():
             total_investment += Team.objects.get(team_code=key).current_price * quant
@@ -55,8 +56,8 @@ class Team(models.Model):
     eliminated = models.BooleanField(default=False, help_text="Has team been \
                                      eliminated")
 
-    current_price = models.IntegerField(help_text = "Current Price of the team",
-                                        verbose_name = "Current Price")
+    current_price = models.DecimalField(help_text = "Current Price of the team",
+                                        verbose_name = "Current Price", decimal_places=2, max_digits=5, null=True)
 
     def total_shares_held(self):
 
@@ -78,7 +79,7 @@ class Team(models.Model):
         return total_invested
 
     def is_trading_open(self):
-#might not work
+
         try:
             time_of_cut_off = self.next_fixture()['date_time_fixture'] - datetime.timedelta(minutes=15)
             if datetime.datetime.now(datetime.timezone.utc) > time_of_cut_off:
@@ -121,7 +122,7 @@ class HistoricalInvestments(models.Model):
 
     """Model represeting historical size of investments by users"""
 
-    user = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     datetime = models.DateTimeField(auto_now=True, help_text="Date and \
                                             Time of transaction",
@@ -133,7 +134,7 @@ class Investment(models.Model):
 
     """Model representing each investment made by users"""
 
-    user = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     team_code = models.ForeignKey(Team,
                                on_delete=models.DO_NOTHING)
@@ -147,7 +148,8 @@ class Investment(models.Model):
                                         sold in this transaction",
                                         verbose_name="Number of Shares")
 
-    price = models.IntegerField(help_text="")
+    price = models.DecimalField(help_text = "Current Price of the team",
+                                        verbose_name = "Current Price", decimal_places=2, max_digits=5)
 
     transaction_date = models.DateTimeField(auto_now=True, help_text="Date and \
                                             Time of transaction",
@@ -167,58 +169,87 @@ class Investment(models.Model):
 
     def change_cash_avaliable(self):
 
-        cash = Profile.objects.get(user=self.user).values('cash_avaliable')
+        cash = self.user.cash_avaliable
 
         investment = self.transaction_type * self.price * self.number_shares
 
-        user = Profile.objects.get(user=self.User)
+        user = self.user
 
-        user.cash_avaliable= cash + investment
+        user.cash_avaliable = cash - investment
         user.save()
 
-    def is_new_investment_ok(user, number_shares, team_code):
+    def update_users_investments(self):
 
-        cash = user.cash_avaliable
-        team_price = Investment.generate_latest_price(team_code)
-        cash_required = team_price * number_shares
+        total_investments = self.user.total_invested
 
-        if cash_required > cash:
-            return False
-        else:
-            return True
+        investment = self.transaction_type * self.price * self.number_shares
 
-    def make_new_investment(user, team_code, number_shares, transaction_type):
+        user = self.user
 
+        user.total_invested = total_investments + investment
+        user.save()
+
+    def is_new_investment_ok(user, number_shares, team_code, transaction_type):
         user = Profile.objects.get(user=user)
-        team_code = Team.objects.get(team_code=team_code)
-        price = team_code.current_price
+
+        if number_shares < 1:
+            return False
 
         if Team.is_trading_open(team_code):
-            if transaction_type == -1:
-                new_investment = Investment.objects.create(user=user, team_code=team_code,
-                                          number_shares=number_shares,
-                                          transaction_type=transaction_type,
-                                          transaction_mode=-1,
-                                          price=price
-                                          )
 
-                new_investment.save()
+            if transaction_type == '1':
 
-            elif transaction_type == 1 and Investment.is_new_investment_ok(user, number_shares, team_code.team_code):
-                new_investment = Investment.objects.create(user=user, team_code=team_code,
-                                          number_shares=number_shares,
-                                          transaction_type=transaction_type,
-                                          transaction_mode=-1,
-                                          price=price
-                                          )
+                cash = user.cash_avaliable
+                team_price = Investment.generate_latest_price(team_code)
 
-                new_investment.save()
+                cash_required = team_price * number_shares
+
+
+                if cash_required > cash:
+                    return False
+                else:
+                    return True
+
+            if transaction_type == '-1':
+
+                try:
+                    number_of_shares_held_in_team = Profile.users_teams_investments(user)[team_code.team_code]
+                except KeyError:
+                    return False
+
+                if number_shares > number_of_shares_held_in_team:
+
+                    return False
+
+                else:
+
+                    return True
+
+            else:
+
+                return False
+
         else:
-            return "Trading is closed"
+            return False
 
-        # if transaction_type == -1 and Team.is_trading_open(team_code):
+    def make_new_investment(user, team_code, number_shares, transaction_type):
+        user = Profile.objects.get(user=user)
+        team_code = Team.objects.get(team_code=team_code)
+        # print(team_code)
+        # print(number_shares)
+        price = Team.objects.get(team_code=team_code).current_price
+        # print(price)
+        transaction_type=int(transaction_type)
 
-    # def post_new_investment
+        new_investment = Investment.objects.create(user=user, team_code=team_code,
+                                                   number_shares=number_shares,
+                                                   transaction_type=transaction_type,
+                                                   price=price, transaction_mode=-1)
+
+
+
+        Investment.change_cash_avaliable(new_investment)
+        # Investment.update_users_investments(new_investment)
 
 
     def __str__(self):
@@ -277,9 +308,9 @@ class Fixture(models.Model):
     def recalculate_share_prices_win(self):
 
         if self.round == 'gp':
-            percentage = 0.5
+            percentage = Decimal(0.5)
         else:
-            percentage = 1
+            percentage = Decimal(1)
 
         if self.team_1.team_code == str(self.winner):
             loser = self.team_2
@@ -288,6 +319,7 @@ class Fixture(models.Model):
 
         if Team.total_invested_in_team(loser) == 0:
             return "N/A"
+            #need to sort out how this is going to work
 
         loser_value = Team.total_invested_in_team(loser) * percentage
 
@@ -380,6 +412,19 @@ def update_total_no_shares(sender, instance, created, **kwargs):
     team.number_of_shares_held = new_shares
     team.save()
 
+
+# @receiver(post_save, sender=Fixture)
+# def update_all_invested(sender, instance, created, **kwargs):
+#
+#     users_affected =
+
+@receiver(post_save, sender=Investment)
+def update_users_investments(sender, instance, created, **kwargs):
+    total_investments = instance.user.total_invested
+    investment = instance.transaction_type * instance.price * instance.number_shares
+    instance.user.total_invested = total_investments + investment
+    instance.user.save()
+
 @receiver(pre_save, sender=Fixture)
 def init_winner(sender, instance, **kwargs):
     if Fixture.objects.get(id=instance.id).winner == None and instance.winner == 'draw':
@@ -399,8 +444,11 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
-def __str__(self):
-    return str(self.user)
+
+
+
+# def __str__(self):
+#     return str(self.user)
 
 # @receiver(post_save, sender=Fixture)
 # def update_share_prices(sender, instance, created, raw, using, update_fields, **kwargs):
