@@ -56,6 +56,8 @@ def index(request):
 
         leaderboard[id]=[position+1, first_name, last_name, total_money]
 
+    
+
 
     return render(request,'index.html',context={'teams': team_dictionary, 'users':leaderboard})
 
