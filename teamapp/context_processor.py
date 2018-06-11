@@ -8,6 +8,6 @@ def header_data(request):
         profile = Profile.objects.filter(user=user).get()
         profile_cash = profile.cash_avaliable
         investments=profile.total_invested
-        return {'wallet': profile_cash, 'investments': investments}
+        return {'wallet': round(profile_cash,2), 'investments': round(investments,2)}
     else:
         return {'wallet': 0, 'investments':0}

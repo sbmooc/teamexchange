@@ -11,8 +11,8 @@ from decimal import *
 class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    total_invested = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    cash_avaliable = models.DecimalField(max_digits=5, decimal_places=2,
+    total_invested = models.DecimalField(max_digits=50, decimal_places=8, default=0)
+    cash_avaliable = models.DecimalField(max_digits=50, decimal_places=8,
                                          default=0)
 
     def users_teams_investments(self):
@@ -57,7 +57,7 @@ class Team(models.Model):
                                      eliminated")
 
     current_price = models.DecimalField(help_text = "Current Price of the team",
-                                        verbose_name = "Current Price", decimal_places=2, max_digits=5, null=True)
+                                        verbose_name = "Current Price", decimal_places=8, max_digits=50, null=True)
 
     def total_shares_held(self):
 
@@ -319,7 +319,6 @@ class Fixture(models.Model):
 
         if Team.total_invested_in_team(loser) == 0:
             return "N/A"
-            #need to sort out how this is going to work
 
         loser_value = Team.total_invested_in_team(loser) * percentage
 
@@ -412,11 +411,31 @@ def update_total_no_shares(sender, instance, created, **kwargs):
     team.number_of_shares_held = new_shares
     team.save()
 
+def update_shares_for_users(team_code):
 
-# @receiver(post_save, sender=Fixture)
-# def update_all_invested(sender, instance, created, **kwargs):
-#
-#     users_affected =
+    all_users = Profile.objects.all()
+    print("yo, we're here")
+
+    all_users_dictionary = {}
+
+    for user in all_users:
+        users_investments = user.users_teams_investments()
+        all_users_dictionary[user] = users_investments
+
+    print(all_users_dictionary)
+
+    for user, teams in all_users_dictionary.items():
+        print(team_code)
+        print(teams)
+        if team_code.team_code in teams:
+            user_to_update = Profile.objects.get(user=user.user)
+            # print(user_to_update)
+            # print(user_to_update.total_invested)
+            user_to_update.total_invested = user_to_update.users_total_investments()
+            print(user_to_update)
+            print(user_to_update.total_invested)
+            # print(user_to_update)
+            user_to_update.save()
 
 @receiver(post_save, sender=Investment)
 def update_users_investments(sender, instance, created, **kwargs):
@@ -427,12 +446,19 @@ def update_users_investments(sender, instance, created, **kwargs):
 
 @receiver(pre_save, sender=Fixture)
 def init_winner(sender, instance, **kwargs):
-    if Fixture.objects.get(id=instance.id).winner == None and instance.winner == 'draw':
-        new_prices = Fixture.recalculate_share_prices_draw(instance)
-        Fixture.update_share_prices(new_prices)
-    elif Fixture.objects.get(id=instance.id).winner == None and instance.winner != None:
-        new_prices = Fixture.recalculate_share_prices_win(instance)
-        Fixture.update_share_prices(new_prices)
+    try:
+        if Fixture.objects.get(id=instance.id).winner == None and instance.winner == 'draw':
+            new_prices = Fixture.recalculate_share_prices_draw(instance)
+            Fixture.update_share_prices(new_prices)
+        elif Fixture.objects.get(id=instance.id).winner == None and instance.winner != None:
+            new_prices = Fixture.recalculate_share_prices_win(instance)
+            Fixture.update_share_prices(new_prices)
+        update_shares_for_users(instance.team_1)
+        update_shares_for_users(instance.team_2)
+    except ObjectDoesNotExist:
+        pass
+
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

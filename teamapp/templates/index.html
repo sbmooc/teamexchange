@@ -7,18 +7,14 @@
             <th><p>Team</p></th>
             <th><p>Price</p></th>
             <th><p>Next</p></th>
-            <!-- <th><p>Total Invested</p></th> -->
-            <!-- <th><!--<p>Trade</p></th> -->
         </tr>
     </thead>
     <tbody>
       {% for team, data in teams.items %}
-        <tr>
-      <td> <div class='team_photo'><a href='/teamapp/team/{{team}}'><p>{{team}} </p></a> <img class='pure-img' src='{{data.0}}'></div></td>
+    <tr>
+      <td> <div class='team_photo'><a href='/teamapp/team/{{team}}'><p>{{team}}</p></a> <img class='pure-img' src='{{data.0}}'></div></td>
       <td> <p>{{data.1}}</p></td>
       <td> <p>{{data.2}}</p><p>{{data.3}}</p></td>
-      <!-- <td><p>{{data.5}}</p></td> -->
-      <!-- <td><a href='/teamapp/team/{{team}}'><img class='pure-img trade_photo' src='https://cdn2.iconfinder.com/data/icons/web/512/Shopping_Cart-512.png'></a></td> -->
     </tr>
       {% endfor %}
     </tbody>

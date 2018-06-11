@@ -17,14 +17,19 @@
 <div id='team_form'>
   <h2> Buy and sell</h2>
   <p> Your wallet: {{wallet}}</p>
-  <!--Put in here how many shares they own in this team-->
+  <p> You own {{number_shares}} shares in this team </p>
+  {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 <form class='pure-form' action='' method='post'>
 
   {% csrf_token %}
 
-  <table>
     {{form}}
-  </table>
 
           <input type="submit" value="Submit" />
 
