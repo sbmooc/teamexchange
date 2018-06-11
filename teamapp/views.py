@@ -13,7 +13,6 @@ def index(request):
 
     teams = Team.objects.all().order_by('team_code')
     users_set = User.objects.all()
-    # teams = reversed(teams)
     team_dictionary = {}
 
     for team in teams:
@@ -31,11 +30,11 @@ def index(request):
                 next_fixture_time = next_fixture['date_time_fixture'].strftime('%d/%m %H:%M')
 
         if team.is_trading_open():
-            total_invested = team.current_price * team.number_of_shares_held
+            total_invested = round(team.current_price * team.number_of_shares_held,2)
         else:
             total_invested = "Trading open"
 
-        team_dictionary[team.team_code] = [team.image, round(team.current_price,2), next_fixture_opponent, next_fixture_time, round(total_invested,2)]
+        team_dictionary[team.team_code] = [team.image, round(team.current_price,3), next_fixture_opponent, next_fixture_time, total_invested]
 
     leaderboard = {}
 
@@ -92,7 +91,10 @@ def team(request, team_code):
                 number_shares = form.cleaned_data.get('number_of_shares')
                 transaction_type = form.cleaned_data.get('transaction_type')
                 Investment.make_new_investment(user, team_code, number_shares, transaction_type)
-                messages.success(request, 'Transaction Complete!')
+                new_shares = int(number_shares) * int(transaction_type) + number_of_shares_held_in_team
+                transaction_success = ""
+                messages.success(request, 'Transaction succesful')
+                return render(request, 'team.html', context={'transaction_successful':transaction_success,'total_value':round(total_value,2),'trading_open':is_trading_open, 'team_code':team.team_code, 'flag': team.image, 'current_price': round(team.current_price,2), 'number_shares': new_shares, 'form':form})
 
         else:
             form = BuySell()

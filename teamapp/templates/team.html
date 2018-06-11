@@ -17,13 +17,14 @@
 <div id='team_form'>
   <h2> Buy and sell</h2>
   <p> Your wallet: {{wallet}}</p>
+  {% if not messages %}
   <p> You own {{number_shares}} shares in this team </p>
+  {% endif %}
   {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
+    <!-- {% for message in messages %} -->
+    <p>{{ message }}</p><!--maybe put in an emoji here - this is thumbs up &#128077-->
+    <p>Now you own {{number_shares}} shares</p>
+    <!-- {% endfor %} -->
 {% endif %}
 <form class='pure-form' action='' method='post'>
 

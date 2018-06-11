@@ -317,9 +317,6 @@ class Fixture(models.Model):
         else:
             loser = self.team_1
 
-        if Team.total_invested_in_team(loser) == 0:
-            return "N/A"
-
         loser_value = Team.total_invested_in_team(loser) * percentage
 
         winner_no_shares = Team.objects.get(team_code=self.winner).number_of_shares_held
@@ -352,36 +349,33 @@ class Fixture(models.Model):
         team_1_value = Team.total_invested_in_team(self.team_1)
         team_2_value = Team.total_invested_in_team(self.team_2)
 
-        if team_1_value == 0 or team_2_value == 0:
-            return "N/A"
-        else:
-            difference = abs(team_1_value - team_2_value)/2
+        difference = abs(team_1_value - team_2_value)/2
 
-            if team_1_value >= team_2_value:
+        if team_1_value >= team_2_value:
 
-                team_1_value = team_1_value - difference
-                team_2_value = team_2_value + difference
+            team_1_value = team_1_value - difference
+            team_2_value = team_2_value + difference
 
-                team_1_shares = Team.objects.get(team_code=self.team_1).number_of_shares_held
-                team_2_shares = Team.objects.get(team_code=self.team_2).number_of_shares_held
+            team_1_shares = Team.objects.get(team_code=self.team_1).number_of_shares_held
+            team_2_shares = Team.objects.get(team_code=self.team_2).number_of_shares_held
 
-                team_1_new_share_price = team_1_value/team_1_shares
-                team_2_new_share_price = team_2_value/team_2_shares
+            team_1_new_share_price = team_1_value/team_1_shares
+            team_2_new_share_price = team_2_value/team_2_shares
 
-                return {self.team_1: team_1_new_share_price, self.team_2: team_2_new_share_price}
+            return {self.team_1: team_1_new_share_price, self.team_2: team_2_new_share_price}
 
-            elif team_2_value > team_1_value:
+        elif team_2_value > team_1_value:
 
-                team_1_value = team_1_value + difference
-                team_2_value = team_2_value - difference
+            team_1_value = team_1_value + difference
+            team_2_value = team_2_value - difference
 
-                team_1_shares = Team.objects.get(team_code=self.team_1).number_of_shares_held
-                team_2_shares = Team.objects.get(team_code=self.team_2).number_of_shares_held
+            team_1_shares = Team.objects.get(team_code=self.team_1).number_of_shares_held
+            team_2_shares = Team.objects.get(team_code=self.team_2).number_of_shares_held
 
-                team_1_new_share_price = team_1_value/team_1_shares
-                team_2_new_share_price = team_2_value/team_2_shares
+            team_1_new_share_price = team_1_value/team_1_shares
+            team_2_new_share_price = team_2_value/team_2_shares
 
-                return {self.team_1: team_1_new_share_price, self.team_2: team_2_new_share_price}
+            return {self.team_1: team_1_new_share_price, self.team_2: team_2_new_share_price}
 
 
 class ClosingValue(models.Model):
@@ -414,7 +408,6 @@ def update_total_no_shares(sender, instance, created, **kwargs):
 def update_shares_for_users(team_code):
 
     all_users = Profile.objects.all()
-    print("yo, we're here")
 
     all_users_dictionary = {}
 
@@ -422,18 +415,18 @@ def update_shares_for_users(team_code):
         users_investments = user.users_teams_investments()
         all_users_dictionary[user] = users_investments
 
-    print(all_users_dictionary)
+    # print(all_users_dictionary)
 
     for user, teams in all_users_dictionary.items():
-        print(team_code)
-        print(teams)
+        # print(team_code)
+        # print(teams)
         if team_code.team_code in teams:
             user_to_update = Profile.objects.get(user=user.user)
             # print(user_to_update)
             # print(user_to_update.total_invested)
             user_to_update.total_invested = user_to_update.users_total_investments()
-            print(user_to_update)
-            print(user_to_update.total_invested)
+            # print(user_to_update)
+            # print(user_to_update.total_invested)
             # print(user_to_update)
             user_to_update.save()
 
@@ -446,17 +439,22 @@ def update_users_investments(sender, instance, created, **kwargs):
 
 @receiver(pre_save, sender=Fixture)
 def init_winner(sender, instance, **kwargs):
-    try:
-        if Fixture.objects.get(id=instance.id).winner == None and instance.winner == 'draw':
-            new_prices = Fixture.recalculate_share_prices_draw(instance)
-            Fixture.update_share_prices(new_prices)
-        elif Fixture.objects.get(id=instance.id).winner == None and instance.winner != None:
-            new_prices = Fixture.recalculate_share_prices_win(instance)
-            Fixture.update_share_prices(new_prices)
-        update_shares_for_users(instance.team_1)
-        update_shares_for_users(instance.team_2)
-    except ObjectDoesNotExist:
+
+    if Team.objects.get(team_code=instance.team_1).number_of_shares_held == 0 or Team.objects.get(team_code=instance.team_2).number_of_shares_held == 0:
         pass
+
+    else:
+        try:
+            if Fixture.objects.get(id=instance.id).winner == None and instance.winner == 'draw':
+                new_prices = Fixture.recalculate_share_prices_draw(instance)
+                Fixture.update_share_prices(new_prices)
+            elif Fixture.objects.get(id=instance.id).winner == None and instance.winner != None:
+                new_prices = Fixture.recalculate_share_prices_win(instance)
+                Fixture.update_share_prices(new_prices)
+            update_shares_for_users(instance.team_1)
+            update_shares_for_users(instance.team_2)
+        except ObjectDoesNotExist:
+            pass
 
 
 
