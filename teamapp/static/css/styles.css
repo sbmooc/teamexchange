@@ -3,6 +3,25 @@ body{
   margin: 0 auto
 }
 
+#base_header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5%
+}
+
+#profile_buttons{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%
+}
+
+#profile_buttons * {
+  margin: 3%
+}
+
 .main {
   display: flex;
   flex-direction: column;
@@ -11,10 +30,6 @@ body{
   padding: 5%;
 }
 
-.pure-menu-horizontal{
-text-align: right;
-padding: 2em;
-}
 
 #team_data{
   width: 100%
@@ -46,9 +61,22 @@ border: solid black 1px
   display: inline-block;
 }
 
-.pure-menu-link{
-  float: left
+.pure-form{
+  display: flex;
+  justify-content: space-between;
+  max-width: 60%;
+  flex-wrap: wrap
 }
+
+.pure-form * {
+  margin: 3% 3% 3% 0
+}
+
+#id_number_of_shares{
+  max-width: 120px
+}
+
+
 
 /* th {
   padding: .5em .5em !important

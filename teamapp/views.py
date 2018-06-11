@@ -89,8 +89,8 @@ def team(request, team_code):
             form = BuySell(request.POST, user=user, team_code=team_code)
 
             if form.is_valid():
-                number_shares = form.cleaned_data['number_of_shares']
-                transaction_type = form.cleaned_data['transaction_type']
+                number_shares = form.cleaned_data.get('number_of_shares')
+                transaction_type = form.cleaned_data.get('transaction_type')
                 Investment.make_new_investment(user, team_code, number_shares, transaction_type)
                 messages.success(request, 'Transaction Complete!')
 

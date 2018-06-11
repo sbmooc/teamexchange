@@ -4,10 +4,15 @@ from .models import Profile, Investment
 
 class BuySell(forms.Form):
 
-    transaction_type = forms.ChoiceField(choices=((-1, "Sell"), (1, "Buy")))
-    number_of_shares = forms.IntegerField(localize=True)
+    transaction_type = forms.ChoiceField(choices=((-1, "Sell"), (1, "Buy")), label='')
 
-    # print(cleaned_data)
+    number_of_shares = forms.IntegerField(localize=True, label='',
+                                              widget=forms.TextInput(attrs={'placeholder': 'Shares'}))
+
+
+
+
+    # print(self.cleaned_data)
 
     # print(transaction_type)
     # print(number_of_shares)
@@ -15,15 +20,14 @@ class BuySell(forms.Form):
 
     def clean_transaction_type(self):
 
-        transaction_type=self.cleaned_data['transaction_type']
-
+        transaction_type = self.cleaned_data.get('transaction_type')
 
         return transaction_type
 
     def clean_number_of_shares(self):
 
 
-        number_shares = self.cleaned_data['number_of_shares']
+        number_shares = self.cleaned_data.get('number_of_shares')
         transaction_type = self.clean_transaction_type()
 
         if Investment.is_new_investment_ok(self.user, number_shares, self.team_code, transaction_type):

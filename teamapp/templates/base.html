@@ -12,19 +12,22 @@
       {% if user.is_authenticated %}
     {% block header %}
 
-    <div class="pure-menu pure-menu-horizontal">
-    <ul class="pure-menu-list">
-        <li class="pure-menu-item"><a href="/" class="pure-menu-link">Exchange</a></li>
-        <li class="pure-menu-item"><p>{{user.first_name}} {{user.last_name}}</p></li>
-        <li class="pure-menu-item">
-          <div class="profile-finance">
-            <li><p>Wallet:  {{wallet}}</p></li>
-            <li><p>Investments:  {{investments}}</p></li>
-          </div>
-        </li>
 
-    </ul>
+<div id='base_header'>
+  <div id='header_links'>
+
+<p><a href='/teamapp/profile'><p>{{user.first_name}} {{user.last_name}}</p></a></p>
+<p><a href="/" class="">Exchange</a></p>
 </div>
+<div id='header_data'>
+<p>Wallet:  £{{wallet}}</p>
+
+<p>Total Investments:  £{{investments}}</p>
+
+</div>
+</div>
+
+
 {% endblock %}
 {% endif %}
 <div class='main'>
