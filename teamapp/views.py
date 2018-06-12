@@ -12,7 +12,7 @@ def index(request):
     """
 
     teams = Team.objects.all().order_by('team_code')
-    users_set = User.objects.all()
+
     team_dictionary = {}
 
     for team in teams:
@@ -36,33 +36,9 @@ def index(request):
 
         team_dictionary[team.team_code] = [team.image, round(team.current_price,3), next_fixture_opponent, next_fixture_time, total_invested]
 
-    leaderboard = {}
-
-    print(users_set)
-    print(users_set[0].profile.total_invested)
-
-    for position, x in enumerate(users_set):
-        if x.is_superuser:
-            break
-        else:
-            position = position
-            id = x.id
-            first_name = x.first_name
-            last_name = x.last_name
-            user_invested = x.profile.total_invested
-            user_cash = x.profile.cash_avaliable
-            if user_invested == None:
-                user_invested = 0
-            if user_cash == None:
-                user_cash = 0
-            total_money = user_invested + user_cash
-
-            leaderboard[id]=[position+1, first_name, last_name, round(total_money,2)]
 
 
-
-
-    return render(request,'index.html',context={'teams': team_dictionary, 'users':leaderboard})
+    return render(request,'index.html',context={'teams': team_dictionary})
 
 
 @login_required
@@ -126,6 +102,43 @@ def profile(request):
         user_teams_dictionary[team] = [team_flag,shares,round(team_price,3), round(current_investment, 2)]
 
 
-
-
     return render(request,'profile.html', context={'user_teams': user_teams_dictionary})
+
+@login_required
+def leaderboard(request):
+
+
+    users_set = User.objects.all()
+
+    leaderboard = {}
+
+    for position, x in enumerate(users_set):
+        if x.is_superuser:
+            break
+        else:
+            position = position
+            id = x.id
+            first_name = x.first_name
+            last_name = x.last_name
+            user_invested = x.profile.total_invested
+            user_cash = x.profile.cash_avaliable
+            if user_invested == None:
+                user_invested = 0
+            if user_cash == None:
+                user_cash = 0
+            total_money = user_invested + user_cash
+
+            leaderboard[id]=[position+1, first_name, last_name, round(total_money,2)]
+
+
+
+
+    return render(request,'leaderboard.html',context={'users':leaderboard})
+
+def faq(request):
+
+    return render(request,'faq.html')
+
+def game_rules(request):
+
+    return render(request,'game_rules.html')

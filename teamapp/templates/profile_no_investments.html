@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-container">
+    <h1> Your Profile </h1>
+        <h3 style="color: red; margin-bottom: 5px">You don't currently have any investments.</h3>
+        <a href="index.html"><p>Invest now on the exchange</p></a>
+        <br>
+        <table class="pure-table pure-table-horizontal team-table">
+            <thead>
+                <tr>
+                    <th><p>Team</p></th>
+                    <th><p>Shares</p></th>
+                    <th><p>Current price</p></th>
+                    <th><p>Your investment</p></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td> <div class='team_photo'><p>-</p></div></td>
+                  <td> <p>-</p></td>
+                  <td> <p>-</p></td>
+                  <td> <p>-</p></td>
+                </tr>
+            </tbody>
+        </table>
+
+    <div id='profile_buttons'>
+        <button class='pure-button pure-button-primary'>Change Password</button>
+        <button class='pure-button pure-button-primary'>Log out</button>
+    </div>
+
+</div>
+
+{% endblock %}

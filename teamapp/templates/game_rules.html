@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+      <h1> World Cup 2018 </h1>
+      <h3><a href='/teamapp/faq' class='pure-button'> FAQ </a></h3>
+
+
+    <div class='all-boxes'>
+      <div class='box'>
+                <p> 1. Buy into the game to get your starting credit </p>
+        <img class='pure-img' src="{% static 'images/1.png' %}">
+
+      </div>
+      <div class='box'>
+          <p> 2. Invest your balance in shares in World Cup teams</p>
+        <img class='pure-img' src="{% static 'images/2.png' %}">
+
+      </div>
+      <div class='box'>
+        <p> 3. Build a portfolio of investments</p>
+        <img class='pure-img' src="{% static 'images/3.png' %}">
+
+      </div>
+      <div class='box'>
+        <p> 4. 15 minutes before kick-off, trading is frozen and invested values are revealed</p>
+
+        <img class='pure-img' src="{% static 'images/4.png' %}">
+      </div>
+      <div class='box'>
+        <div>
+        <p> 5. The teams’ values & share prices will change based on the result</p>
+        <p> A.	For a group stage win, the winner gains half of the losing side’s value<p>
+        </div>
+        <img class='pure-img' src="{% static 'images/5.png' %}">
+
+      </div>
+      <div class='box'>
+            <p> B.	Group stage draws equalise the value across both team</p>
+        <img class='pure-img' src="{% static 'images/6.png' %}">
+
+      </div>
+      <div class='box'>
+        <p> C.	In knockout games the winner takes the whole value of the loser</p>
+
+        <img class='pure-img' src="{% static 'images/7.png' %}">
+      </div>
+      <div class='box'>
+        <p> 6. After your teams play, your portfolio will increase or decrease in value</p>
+
+        <img class='pure-img' src="{% static 'images/8.png' %}">
+      </div>
+      <div class='box'>
+        <p> 7. Take out your winnings at the end of the world cup</p>
+
+        <img class='pure-img' src="{% static 'images/9.png' %}">
+      </div>
+  <a href='/teamapp/faq' class='pure-button' style='margin-top: 1%'> Still confused? Read our FAQ </a>
+
+  {% endblock %}

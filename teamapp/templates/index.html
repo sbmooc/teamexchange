@@ -1,45 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-<h1> Teams </h1>
-<table class="pure-table pure-table-horizontal team-table">
-    <thead>
-        <tr>
-            <th><p>Team</p></th>
-            <th><p>Price</p></th>
-            <th><p>Next</p></th>
-        </tr>
-    </thead>
-    <tbody>
-      {% for team, data in teams.items %}
-    <tr>
-      <td> <div class='team_photo'><a href='/teamapp/team/{{team}}'><p>{{team}}</p></a> <img class='pure-img' src='{{data.0}}'></div></td>
-      <td> <p>£{{data.1}}</p></td>
-      <td> <p>{{data.2}}</p><p>{{data.3}}</p></td>
-    </tr>
-      {% endfor %}
-    </tbody>
-</table>
-
-<h1> Leaderboard </h1>
-
-<table class="pure-table pure-table-horizontal">
-    <thead>
-        <tr>
-          <th><p>#</p></th>
-          <th><p>User</p></th>
-          <th><p>Total Money</p></th>
-        </tr>
-    </thead>
-    <tbody>
-      {% for user,data in users.items %}
-        <tr>
-          <td><p>{{data.0}}</p></td>
-          <td><p>{{data.1}}</p><p> {{data.2}}</p></td>
-          <td> <p>£{{data.3}}</p></td>
-        </tr>
-      {% endfor %}
-    </tbody>
-</table>
-
+<div class="page-container">
+    <h1> Teams </h1>
+    <table class="pure-table pure-table-horizontal team-table">
+        <thead>
+            <tr>
+                <th><p>Team</p></th>
+                <th><p>Share price</p></th>
+                <th><p>Next</p></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team, data in teams.items %}
+                <tr>
+                    <td> <div class='team_photo'><a href='/teamapp/team/{{team}}'><p>{{team}}</p></a> <img class='pure-img' src='{{data.0}}'></div></td>
+                    <td> <p>{{data.1}}</p></td>
+                    <td> <p>{{data.2}}</p><p>{{data.3}}</p></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}

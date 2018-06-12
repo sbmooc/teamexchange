@@ -1,33 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1> Your Profile </h1>
-<table class="pure-table pure-table-horizontal team-table">
-    <thead>
-        <tr>
-            <th><p>Team</p></th>
-            <th><p>Shares</p></th>
-            <th><p>Current Price</p></th>
-            <th><p>Your Investment</p></th>
-        </tr>
-    </thead>
-    <tbody>
-      {% for team, data in user_teams.items %}
-    <tr>
-      <td> <div class='team_photo'><a href='/teamapp/team/{{team}}'><p>{{team}} </p></a> <img class='pure-img' src='{{data.0}}'></div></td>
-      <td> <p>{{data.1}}</p></td>
-      <td> <p>{{data.2}}</p></td>
-      <td> <p>{{data.3}}</p></td>
-    </tr>
-      {% endfor %}
-    </tbody>
-</table>
+<div class="page-container">
+    <h1> Your Profile </h1>
+        <table class="pure-table pure-table-horizontal team-table">
+            <thead>
+                <tr>
+                    <th><p>Team</p></th>
+                    <th><p>Shares</p></th>
+                    <th><p>Current price</p></th>
+                    <th><p>Your investment</p></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team, data in user_teams.items %}
+                    <tr>
+                        <td> <div class='team_photo'><a href='/teamapp/team/{{team}}'><p>{{team}}</p></a> <img class='pure-img' src='{{data.0}}'></div></td>
+                        <td> <p>{{data.1}}</p></td>
+                        <td> <p>{{data.2}}</p></td>
+                        <td> <p>{{data.3}}</p></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-<div id='profile_buttons'>
 
-  <a href='/accounts/password/change/'><button class='pure-button pure-button-primary'>Change Password</button></a>
-  <a href='/accounts/logout'><button class='pure-button pure-button-primary'>Log out</button></a>
+        <div id='profile_buttons'>
+
+          <a href='/accounts/password/change/'><button class='pure-button pure-button-primary'>Change Password</button></a>
+          <a href='/accounts/logout'><button class='pure-button pure-button-primary'>Log out</button></a>
+        </div>
 </div>
-
 
 {% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-container">
+    <h1> Leaderboard </h1>
+    <table class="pure-table pure-table-horizontal team-table">
+        <thead>
+            <tr>
+                <th><p>#</p></th>
+                <th><p>User</p></th>
+                <th><p>Total value</p></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user,data in users.items %}
+                <tr>
+                    <td><p>{{data.0}}</p></td>
+                    <td><p>{{data.1}}</p><p> {{data.2}}</p></td>
+                    <td> <p>{{data.3}}</p></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

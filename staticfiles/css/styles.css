@@ -1,10 +1,9 @@
 body{
-  max-width: 800px;
-  margin: 0 auto
-}
-
-.pure-form label {
-  /* display: none */
+    max-width: 800px;
+    height: 100vh;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 label[for=id_password], label[for=id_login]{
@@ -27,28 +26,136 @@ label[for=id_password], label[for=id_login]{
 
 }
 
-@keyframes trans_message {
-    to {
-        width:0;
-        height:0;
-        overflow:hidden;
-    }
+#base_header_background {
+    width: 800px;
+    position: fixed;
+    flex: column
 }
-@-webkit-keyframes trans_message {
-    to {
-        width:0;
-        height:0;
-        visibility:hidden;
+
+@media(max-width: 800px) {
+    #base_header_background, #base_header, #sub_header {
+        width: 100%
     }
 }
 
+@media(max-width: 450px) {
+    #sub_header, #footer {
+        justify-content: space-between;
+    }
+    #team_chart{
+        height: 250px;
+    }
+}
+/*Header bar*/
 
 #base_header{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 5%
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin:0;
+    padding: 0;
+    background-color: #42515A;
+    box-shadow: 0px 3px 2px #888888;
 }
+
+#base_header div {
+    float: left;
+}
+
+#base_header div a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 15px 15px;
+    text-decoration: none;
+}
+
+#base_header div a:hover:not(.active) {
+    background-color: #111;
+}
+
+
+.money p {
+    text-align: right;
+    margin-top: 0px;
+    margin-bottom: 3px;
+/*    padding-left: 0px;
+    padding-right: 20px;*/
+}
+
+.logo {
+max-width: 90px
+}
+
+.header .logo_list {
+    padding: 0px 0px;
+}
+
+/*Sub-header bar*/
+
+#sub_header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin:0;
+    padding: 0;
+    background-color: #40798C;
+    box-shadow: 0px 3px 2px #888888;
+}
+
+#sub_header div {
+    float: left;
+    background-color: #40798C;
+}
+
+#sub_header div a{
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 20px 20px;
+    text-decoration: none;
+}
+
+#sub_header div a:hover:not(.active) {
+    background-color: #111;
+}
+
+#active {
+    background-color: #FF6978;
+    font-weight: bold;
+}
+
+/*Footer bar*/
+
+#footer {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    width: 100%;
+    margin:0;
+    margin-top: 20px;
+    padding: 0;
+    background-color: gray;
+}
+
+#footer div {
+    float: left;
+    background-color: gray;
+}
+
+#footer div a {
+    display: block;
+    color: #333333;
+    text-align: center;
+    padding: 15px 20px;
+    text-decoration: none;
+}
+
+#footer div a:hover:not(.active) {
+    background-color: #9b9b9b;
+}
+
 
 #profile_buttons{
   display: flex;
@@ -63,13 +170,12 @@ label[for=id_password], label[for=id_login]{
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* padding: 5%; */
+    margin-top: 150px;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-
 
 #team_data{
   width: 100%
@@ -83,18 +189,17 @@ label[for=id_password], label[for=id_login]{
 }
 
 #team_headline img{
-width: 40%;
-max-width: 200px;
-border: solid black 1px
+    width: 40%;
+    max-width: 200px;
+    height: 40%;
+    box-shadow: 1px 3px 3px #888888;
 }
 
 #team_chart{
   margin-top: 5%;
   width: 100%;
-  height: 30%;
-  min-height: 300px;
-  background: blue
-
+  height: 400px;
+  /*background: blue*/
 }
 
 .pure-form .pure-radio {
@@ -116,14 +221,18 @@ border: solid black 1px
   max-width: 120px
 }
 
+table {
+    width: 100%;
+}
 
 
-/* th {
-  padding: .5em .5em !important
-} */
+th {
+  background: #42515A;
+  color: #FFFFFF
+}
 
 th, td {
-  text-align: center
+  text-align: center;
 }
 
 .team_photo {
@@ -131,45 +240,143 @@ th, td {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap
+  flex-wrap: wrap;
+  /*box-shadow: 5px 10px;*/
 }
 
 .team_photo img, .trade_photo{
-  max-height: 1.5em;
+  width: 2em;
+/*  border-radius: 50%;*/
+  box-shadow: 1px 2px 2px #888888
 }
 
-@media(min-width: 452px){
+@media(min-width: 450px){
   .team_photo img {
     margin-left: 8px
   }
 }
 
 tr:hover {
-    background: pink
+    background: #FF6978
   }
 
-.team-table a {
-  text-decoration: none;
-  color: green;
-  display: block;
-}
-
-@media(max-width: 452px) {
+@media(max-width: 450px) {
 .pure-table td, .pure-table th {
     padding: 0.2em;
-
   }
 
-  .pure-table td:first-child, .pure-table th:first-child {
+
+.pure-table td:first-child, .pure-table th:first-child {
     padding-top, padding-bottom: .5em;
     padding-left: 0.2em;
-}
-
-.pure-table p{
-  font-size: 0.8em
 }
 
 .pure-table img{
   display: none
 }
+}
+
+/*Table formatting*/
+
+.team-table {
+  table-layout: fixed;
+}
+
+.team-table a {
+  text-decoration: none;
+  color: black;
+  display: block;
+}
+
+.team-table td {
+  padding: 0
+}
+
+.team-table th {
+    height: 70px;
+    padding: 0px;
+    vertical-align: middle;
+}
+
+.page-container {
+    width: 90%
+}
+
+.fixture-date{
+    font-size: 0.6em;
+    color: gray
+}
+
+/* body {
+  font-family: 'Lato', sans-serif;
+  padding: 5%
+} */
+
+.faq {
+
+  max-width: 600px
+}
+
+.faq .box{
+  margin: 0 !important
+}
+
+
+/* .logo {
+
+  max-width: 300px;
+  margin: 0 auto;
+  text-align: center
+
+} */
+
+#mc_embed_signup{
+text-align: left;
+}
+
+#mc_embed_signup input{
+margin-bottom: 6%
+}
+
+
+
+
+
+.box {
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  margin: 3% 3% 0 3%;
+  border: 2px solid black;
+  padding: 2%;
+  text-align: center
+}
+
+@media (max-width: 500px){
+
+  .box{
+    flex-wrap: wrap
+  }
+  .box img{
+    max-width: 100% !important;
+    margin: 0 !important
+  }
+  .box p {
+    width: 100%
+  }
+}
+
+
+.box img{
+  max-width: 60%;
+  margin-left: 5%
+}
+
+.all-boxes{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center
 }

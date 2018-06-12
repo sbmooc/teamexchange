@@ -1,45 +1,44 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    {% block title %}<title>Team Exchange 2018</title>{% endblock %}
-    {% load static %}
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="noindex">
-  </head>
-  <body>
-      {% if user.is_authenticated %}
-    {% block header %}
+    <head>
+        <meta charset="utf-8">
+        {% block title %}<title>Team Exchange 2018</title>{% endblock %}
+        {% load static %}
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    </head>
+    <body>
+    {% if user.is_authenticated %}
+        {% block header %}
+            <div id="base_header_background">
+                <div id='base_header'>
+                  <div class='logo'><a href="/teamapp/profile"><img class='pure-img' src="{% static 'images/logo.png' %}"></a></div>
+                  <div>
+                    <a class="money" href="/teamapp/profile">
+                      <p>{{user.first_name}} {{user.last_name}}</p>
+                      <p>In wallet:  £{{wallet}}</p>
+                      <p style="font-size: 0.8em; color: #B3B3B3">Invested:  £{{investments}}</p>
+                    </a>
+                  </div>
+                </div>
 
+                <div id="sub_header">
+                    <div><a href="/">Exchange</a></div>
+                    <div><a href="/teamapp/leaderboard">Leaderboard</a></div>
+                </div>
+            </div>
+        {% endblock %}
+    {% endif %}
 
-<div id='base_header'>
-  <div id='header_links'>
+    <div class='main'>
+        {% block content %}
+        {% endblock %}
+    </div>
 
-<p><a href='/teamapp/profile'><p>{{user.first_name}} {{user.last_name}}</p></a></p>
-<p><a href="/" class="">Exchange</a></p>
-{% if messages %}
-  {% for message in messages %}
-  <p>{{ message }}</p><!--maybe put in an emoji here - this is thumbs up &#128077-->
-  {% endfor %}
-{% endif %}
-</div>
-<div id='header_data'>
-<p>Wallet:  £{{wallet}}</p>
-
-<p>Total Investments:  £{{investments}}</p>
-
-</div>
-</div>
-
-
-{% endblock %}
-{% endif %}
-<div class='main'>
-
-{% block content %}
-{% endblock %}
-</div>
-  </body>
+    <div id="footer">
+        <div><a href="/teamapp/faq">FAQs</a></div>
+        <div><a href="/teamapp/game_rules">Game rules</a></div>
+        <div><a href="#">Feedback</a></div>
+    </div>
+    </body>
 </html>
