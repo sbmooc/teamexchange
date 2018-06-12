@@ -137,6 +137,8 @@ max-width: 90px
     margin-top: 20px;
     padding: 0;
     background-color: gray;
+    position: absolute;
+    bottom: 0
 }
 
 #footer div {
@@ -322,13 +324,7 @@ tr:hover {
 }
 
 
-/* .logo {
 
-  max-width: 300px;
-  margin: 0 auto;
-  text-align: center
-
-} */
 
 #mc_embed_signup{
 text-align: left;
