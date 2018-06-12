@@ -286,7 +286,7 @@ class Fixture(models.Model):
     team_2_goals = models.IntegerField(help_text="Number of goals Team 2 scored",
                                        verbose_name="Team 2 goals", null=True, blank=True)
 
-    team_choices = tuple((x['team_code'], x['team_code']) for x in Team.objects.all().values('team_code'))
+    # team_choices = tuple((x['team_code'], x['team_code']) for x in Team.objects.all().values('team_code'))
 
     team_choices = (('draw', 'Draw'),(None, 'Null'))
 
