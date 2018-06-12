@@ -349,7 +349,10 @@ class Fixture(models.Model):
         team_1_value = Team.total_invested_in_team(self.team_1)
         team_2_value = Team.total_invested_in_team(self.team_2)
 
-        difference = abs(team_1_value - team_2_value)/2
+        if abs(team_1_value - team_2_value) == 0:
+            difference = 0
+        else:
+            difference = abs(team_1_value - team_2_value)/2
 
         if team_1_value >= team_2_value:
 
