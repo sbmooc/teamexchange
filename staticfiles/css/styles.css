@@ -11,6 +11,37 @@ label[for=id_password], label[for=id_login]{
   display: none
 }
 
+#transaction_messages{
+  background-color: red;
+  -moz-animation: trans_message 0s ease-in 5s forwards;
+  /* Firefox */
+  -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+  /* Safari and Chrome */
+  -o-animation: cssAnimation 0s ease-in 5s forwards;
+  /* Opera */
+  animation: cssAnimation 0s ease-in 5s forwards;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  padding: 1%;
+  margin: 2% 0
+
+}
+
+@keyframes trans_message {
+    to {
+        width:0;
+        height:0;
+        overflow:hidden;
+    }
+}
+@-webkit-keyframes trans_message {
+    to {
+        width:0;
+        height:0;
+        visibility:hidden;
+    }
+}
+
 
 #base_header{
   display: flex;

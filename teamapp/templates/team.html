@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 <div id='team_data'>
+  {% if messages %}
+    {% for message in messages %}
+    <div id='transaction_messages'>
+    <p>{{ message }}, now you own {{number_shares}} shares in {{team_code}}</p>
+  </div>
+    {% endfor %}
+
+{% endif %}
 <div id='team_headline'>
-  <div>
+<div>
 <h1> {{team_code}}</h1>
 <h3> {{current_price}}</h3>
 </div>
@@ -20,12 +28,7 @@
   {% if not messages %}
   <p> You own {{number_shares}} shares in this team </p>
   {% endif %}
-  {% if messages %}
-    <!-- {% for message in messages %} -->
-    <p>{{ message }}</p><!--maybe put in an emoji here - this is thumbs up &#128077-->
-    <p>Now you own {{number_shares}} shares</p>
-    <!-- {% endfor %} -->
-{% endif %}
+
 <form class='pure-form' action='' method='post'>
 
   {% csrf_token %}
