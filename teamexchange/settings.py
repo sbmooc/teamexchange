@@ -107,7 +107,7 @@ DATABASES = {
         'NAME': 'teamexchange',
         'USER': 'oliver',
         'PASSWORD': '',
-        'HOST': '127.0.0.1',
+        'HOST': '',
         'PORT': '',
     }
 }
