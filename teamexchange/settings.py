@@ -30,7 +30,6 @@ ALLOWED_HOSTS = ['127.0.0.1','.herokuapp.com']
 
 
 SECURE_SSL_REDIRECT = True
-print(SECURE_SSL_REDIRECT)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
@@ -163,14 +162,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/staticfiles  /'
+STATIC_URL = '/staticfiles/'
 
 # print(STATIC_ROOT)
 
 try:
     from .local_settings import *
-except:
+except ImportError:
     pass
-
-# Extra places for collectstatic to find static files.
-# STATICFILES_DIRS = ('/staticfiles/css',)
