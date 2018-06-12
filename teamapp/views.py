@@ -42,19 +42,22 @@ def index(request):
     print(users_set[0].profile.total_invested)
 
     for position, x in enumerate(users_set):
-        position = position
-        id = x.id
-        first_name = x.first_name
-        last_name = x.last_name
-        user_invested = x.profile.total_invested
-        user_cash = x.profile.cash_avaliable
-        if user_invested == None:
-            user_invested = 0
-        if user_cash == None:
-            user_cash = 0
-        total_money = user_invested + user_cash
+        if x.is_superuser:
+            break
+        else:
+            position = position
+            id = x.id
+            first_name = x.first_name
+            last_name = x.last_name
+            user_invested = x.profile.total_invested
+            user_cash = x.profile.cash_avaliable
+            if user_invested == None:
+                user_invested = 0
+            if user_cash == None:
+                user_cash = 0
+            total_money = user_invested + user_cash
 
-        leaderboard[id]=[position+1, first_name, last_name, round(total_money,2)]
+            leaderboard[id]=[position+1, first_name, last_name, round(total_money,2)]
 
 
 
