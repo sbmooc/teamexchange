@@ -25,6 +25,14 @@
                 <div id="sub_header">
                     <div><a href="/">Exchange</a></div>
                     <div><a href="/teamapp/leaderboard">Leaderboard</a></div>
+                    {% if messages %}
+                      {% for message in messages %}
+                      <div id='transaction_messages'>
+                      <p>{{ message }}</p>
+                      <!-- , now you own {{number_shares}} shares in {{team_code}} -->
+                    </div>
+                      {% endfor %}
+                      {% endif %}
                 </div>
             </div>
         {% endblock %}

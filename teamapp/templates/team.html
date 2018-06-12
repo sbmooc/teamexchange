@@ -2,13 +2,7 @@
 {% block content %}
 <div class="page-container">
     <div id='team_data'>
-      {% if messages %}
-        {% for message in messages %}
-        <div id='transaction_messages'>
-        <p>{{ message }}, now you own {{number_shares}} shares in {{team_code}}</p>
-      </div>
-        {% endfor %}
-        {% endif %}
+
         <div id='team_headline'>
             <div>
                 <h1>{{team_code}}</h1>
