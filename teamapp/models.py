@@ -137,7 +137,7 @@ class Investment(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     team_code = models.ForeignKey(Team,
-                               on_delete=models.DO_NOTHING)
+                               on_delete=models.CASCADE)
 
     transaction_type = models.IntegerField(choices=((-1, "Sell"), (1, "Buy")),
                                            help_text="Show whether transaction\
@@ -269,11 +269,11 @@ class Fixture(models.Model):
 
     team_1 = models.ForeignKey(Team,
                                related_name="%(class)s_team1",
-                               on_delete=models.DO_NOTHING)
+                               on_delete=models.CASCADE)
 
     team_2 = models.ForeignKey(Team,
                                related_name="%(class)s_team2",
-                               on_delete=models.DO_NOTHING)
+                               on_delete=models.CASCADE)
 
     date_time_fixture = models.DateTimeField(help_text="Date and Time for fixture",
                                              verbose_name="Date and Time")
@@ -288,7 +288,7 @@ class Fixture(models.Model):
 
     team_choices = tuple((x['team_code'], x['team_code']) for x in Team.objects.all().values('team_code'))
 
-    team_choices += (('draw', 'Draw'),(None, 'Null'))
+    team_choices = (('draw', 'Draw'),(None, 'Null'))
 
     winner = models.CharField(max_length = 4, null=True, blank=True, choices=(team_choices))
 
@@ -380,7 +380,7 @@ class Fixture(models.Model):
 
 class ClosingValue(models.Model):
 
-    team_code = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
+    team_code = models.ForeignKey(Team, on_delete=models.CASCADE)
 
     date_time = models.DateTimeField(auto_now=True, help_text="Date and \
                                             Time of price",
