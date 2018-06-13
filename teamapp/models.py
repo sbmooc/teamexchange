@@ -261,7 +261,10 @@ class Investment(models.Model):
             transaction_type = 'Buy'
         else:
             transaction_type = 'Sell'
-        return self.transaction_date.strftime('%d/%m/%Y %H:%M') + "--" + str(self.user) + "--" + str(self.price) + "--" + transaction_type
+
+        value = self.price * self.number_shares
+
+        return self.transaction_date.strftime('%d/%m/%Y %H:%M') + "--" + str(self.user) + "--" + str(value) + " " + str(self.team_code)+ "--" + transaction_type
 
 class Fixture(models.Model):
 
