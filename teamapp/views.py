@@ -124,8 +124,9 @@ def leaderboard(request):
     leaderboard = {}
 
     for position, x in enumerate(users_set):
+
         if x.is_superuser:
-            break
+            continue
         else:
             position = position
             id = x.id
