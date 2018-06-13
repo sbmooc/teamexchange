@@ -106,9 +106,12 @@ def profile(request):
             user_teams_dictionary[team] = [team_flag,shares,round(team_price,3), round(current_investment, 2)]
 
 
-    print(user_teams_dictionary)
+    if len(user_teams_dictionary) == 0:
+        empty_profile = True
+    else:
+        empty_profile = False
 
-    return render(request,'profile.html', context={'user_teams': user_teams_dictionary})
+    return render(request,'profile.html', context={'user_teams': user_teams_dictionary, 'empty_profile':empty_profile})
 
 @login_required
 def leaderboard(request):
