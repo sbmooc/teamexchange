@@ -36,22 +36,25 @@
                 <div id="sub_header">
                     <div><a href="/">Exchange</a></div>
                     <div><a href="/teamapp/leaderboard">Leaderboard</a></div>
-                    {% if messages %}
-                      {% for message in messages %}
-                      <div id='transaction_messages'>
-                      <p>{{ message }}
-                      {% if "team" in request.get_full_path  %}
-                      , now you own {{number_shares}} shares in {{team_code}}
-                      {% endif %}</p>
-                    </div>
-                      {% endfor %}
-                      {% endif %}
+
                 </div>
+
             </div>
         {% endblock %}
   {% endif %}
 
     <div class='main'>
+      <div id='message_bar' class='hide_no_messages {% if messages %} show_messages {% endif %}'>
+                      {% if messages %}
+                        {% for message in messages %}
+                        <p>{{ message }}
+                          {% if "team" in request.get_full_path  %}
+                        - now you own {{number_shares}} shares in {{team_code}}
+                        {% endif %}</p>
+
+                        {% endfor %}
+                        {% endif %}
+                      </div>
         {% block content %}
         {% endblock %}
 
@@ -59,7 +62,7 @@
     <div id="footer">
         <div><a href="/teamapp/faq">FAQs</a></div>
         <div><a href="/teamapp/game_rules">Game rules</a></div>
-        <div><a href="#">Feedback</a></div>
+        <div><a href="mailto: hello@teamexchange.co.uk" id='footer_email'>hello@teamexchange.co.uk</a></div>
     </div>
   </div>
     </body>

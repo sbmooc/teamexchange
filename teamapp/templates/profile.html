@@ -18,7 +18,7 @@
             <tbody>
                 {% for team, data in user_teams.items %}
                     <tr>
-                        <td> <div class='team_photo'><a href='/teamapp/team/{{team}}'><p>{{team}}</p></a> <img class='pure-img' src='{{data.0}}'></div></td>
+                        <td> <div class='team_photo'><a href='/teamapp/team/{{team}}' class='rowlink'><p>{{team}}</p></a> <img class='pure-img' src='{{data.0}}'></div></td>
                         <td> <p>{{data.1}}</p></td>
                         <td> <p>{{data.2}}</p></td>
                         <td> <p>{{data.3}}</p></td>

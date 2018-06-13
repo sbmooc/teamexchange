@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<h1>{% trans "Sign In" %}</h1>
+<h1>{% trans "Log In" %}</h1>
 
 {% get_providers as socialaccount_providers %}
 
@@ -33,19 +33,22 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
 <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p> -->
 {% endif %}
 
-{% if messages %}
+<!--{% if messages %}
   {% for message in messages %}
-  <p>{{ message }}</p><!--maybe put in an emoji here - this is thumbs up &#128077-->
+  <p>{{ message }}</p>maybe put in an emoji here - this is thumbs up &#128077
   {% endfor %}
-{% endif %}
+{% endif %}-->
+
+<div class=''<img class='pure-img' src="{% static 'images/logo.png' %}"></div>
 <form class="pure-form" method="POST" action="{% url 'account_login' %}">
   {% csrf_token %}
   {{ form }}
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
-  <a class="pure-button pure-button-primary" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction pure-button pure-button-primary" type="submit">{% trans "Sign In" %}</button>
+  <!-- <a class="pure-button pure-button-primary" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a> -->
+  <button class="primaryAction pure-button pure-button-primary" type="submit">{% trans "Log In" %}</button>
+  <p> Forgotton your password? Email us at hello@teamexchange.co.uk </p>
 </form>
 
 {% endblock %}
