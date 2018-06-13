@@ -91,19 +91,22 @@ def profile(request):
 
     user_teams_dictionary = {}
 
+    print(user_teams.items())
+
     for team, shares in user_teams.items():
 
-        if shares == 0:
-            break
-        else:
+        team_flag = Team.objects.get(team_code=team).image
 
-            team_flag = Team.objects.get(team_code=team).image
+        team_price = Team.objects.get(team_code=team).current_price
 
-            team_price = Team.objects.get(team_code=team).current_price
+        current_investment = team_price * shares
 
-            current_investment = team_price * shares
+        if current_investment > 0:
 
             user_teams_dictionary[team] = [team_flag,shares,round(team_price,3), round(current_investment, 2)]
+
+
+    print(user_teams_dictionary)
 
     return render(request,'profile.html', context={'user_teams': user_teams_dictionary})
 
