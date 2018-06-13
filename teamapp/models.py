@@ -275,6 +275,8 @@ class Fixture(models.Model):
                                related_name="%(class)s_team2",
                                on_delete=models.CASCADE)
 
+    stadium = models.CharField(max_length = 60, null=True)
+
     date_time_fixture = models.DateTimeField(help_text="Date and Time for fixture",
                                              verbose_name="Date and Time")
 
@@ -291,6 +293,8 @@ class Fixture(models.Model):
     team_choices += (('draw', 'Draw'),(None, 'Null'))
 
     winner = models.CharField(max_length = 4, null=True, blank=True, choices=(team_choices))
+
+    # gmt_time = self.date_time_fixture + + datetime.timedelta(hours=1)
 
     def __str__(self):
 
