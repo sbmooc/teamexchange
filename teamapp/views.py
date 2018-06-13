@@ -72,7 +72,7 @@ def team(request, team_code):
                 Investment.make_new_investment(user, team_code, number_shares, transaction_type)
                 new_shares = int(number_shares) * int(transaction_type) + number_of_shares_held_in_team
                 transaction_success = ""
-                messages.success(request, 'Transaction succesful')
+                messages.success(request, 'Transaction successful')
                 return render(request, 'team.html', context={'transaction_successful':transaction_success,'total_value':round(total_value,2),'trading_open':is_trading_open, 'team_code':team.team_code, 'flag': team.image, 'current_price': round(team.current_price,2), 'number_shares': new_shares, 'form':form})
 
         else:
