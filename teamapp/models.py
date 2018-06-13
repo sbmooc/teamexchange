@@ -82,7 +82,7 @@ class Team(models.Model):
 
         try:
             time_of_cut_off = self.next_fixture()['date_time_fixture'] - datetime.timedelta(minutes=15)
-            if datetime.datetime.now(datetime.timezone.utc) > time_of_cut_off:
+            if datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1) > time_of_cut_off:
                 return False
             else:
                 return True
@@ -286,9 +286,9 @@ class Fixture(models.Model):
     team_2_goals = models.IntegerField(help_text="Number of goals Team 2 scored",
                                        verbose_name="Team 2 goals", null=True, blank=True)
 
-    # team_choices = tuple((x['team_code'], x['team_code']) for x in Team.objects.all().values('team_code'))
+    team_choices = tuple((x['team_code'], x['team_code']) for x in Team.objects.all().values('team_code'))
 
-    team_choices = (('draw', 'Draw'),(None, 'Null'))
+    team_choices += (('draw', 'Draw'),(None, 'Null'))
 
     winner = models.CharField(max_length = 4, null=True, blank=True, choices=(team_choices))
 

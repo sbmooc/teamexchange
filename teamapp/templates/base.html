@@ -48,7 +48,7 @@
                       {% if messages %}
                         {% for message in messages %}
                         <p>{{ message }}
-                          {% if "team" in request.get_full_path  %}
+                          {% if team_page %}
                         - now you own {{number_shares}} shares in {{team_code}}
                         {% endif %}</p>
 

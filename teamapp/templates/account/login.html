@@ -39,7 +39,7 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
   {% endfor %}
 {% endif %}-->
 
-<div class=''<img class='pure-img' src="{% static 'images/logo.png' %}"></div>
+<div class='sign_up_logo'><img class='pure-img' src="{% static 'images/logo.png' %}"></div>
 <form class="pure-form" method="POST" action="{% url 'account_login' %}">
   {% csrf_token %}
   {{ form }}

@@ -24,6 +24,10 @@ height: 2em;
   word-break: break-all
 }
 
+.sign_up_logo{
+  width: 30px
+}
+
 label[for=id_password], label[for=id_login]{
   display: none
 }

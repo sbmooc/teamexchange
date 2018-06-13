@@ -78,9 +78,11 @@ def team(request, team_code):
         else:
             form = BuySell()
 
+        team_page = True
 
+        print(team_page)
 
-        return render(request,'team.html',context={'total_value':round(total_value,2),'trading_open':is_trading_open, 'team_code':team.team_code, 'flag': team.image, 'current_price': round(team.current_price,2), 'number_shares': number_of_shares_held_in_team, 'form':form})
+        return render(request,'team.html',context={'total_value':round(total_value,2),'trading_open':is_trading_open, 'team_code':team.team_code, 'flag': team.image, 'current_price': round(team.current_price,2), 'number_shares': number_of_shares_held_in_team, 'form':form, 'team_page': team_page})
 
 @login_required
 def profile(request):
