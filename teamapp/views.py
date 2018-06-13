@@ -121,6 +121,12 @@ def leaderboard(request):
 
     users_set = User.objects.all()
 
+    player_users = User.objects.all().filter(is_superuser=False)
+
+    number_of_users = len(player_users)
+
+    money_in_game = 20 * len(player_users)
+
     leaderboard = {}
 
     for position, x in enumerate(users_set):
@@ -145,7 +151,7 @@ def leaderboard(request):
 
 
 
-    return render(request,'leaderboard.html',context={'users':leaderboard})
+    return render(request,'leaderboard.html',context={'users':leaderboard,'money_in_game':money_in_game,'number_of_users':number_of_users})
 
 def faq(request):
 
