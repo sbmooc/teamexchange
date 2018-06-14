@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ObjectDoesNotExist
 from decimal import *
+import pytz
 
 class Profile(models.Model):
 
@@ -278,7 +279,7 @@ class Fixture(models.Model):
                                related_name="%(class)s_team2",
                                on_delete=models.CASCADE)
 
-    stadium = models.CharField(max_length = 60, null=True)
+    stadium = models.CharField(max_length = 60, null=True, blank=True)
 
     date_time_fixture = models.DateTimeField(help_text="Date and Time for fixture",
                                              verbose_name="Date and Time")
@@ -297,7 +298,11 @@ class Fixture(models.Model):
 
     winner = models.CharField(max_length = 4, null=True, blank=True, choices=(team_choices))
 
-    # gmt_time = self.date_time_fixture + + datetime.timedelta(hours=1)
+    def bst_time(self):
+
+        bst_time = self.date_time_fixture + datetime.timedelta(hours=1)
+
+        return bst_time
 
     def __str__(self):
 

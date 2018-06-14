@@ -24,11 +24,13 @@ def index(request):
         else:
             if team.team_code == next_fixture['team_1_id']:
                 next_fixture_opponent = next_fixture['team_2_id']
-                next_fixture_time = next_fixture['date_time_fixture'].strftime('%d/%m %H:%M')
+                next_fixture_time = next_fixture['date_time_fixture'] + datetime.timedelta(hours=1)
+                next_fixture_time = next_fixture_time.strftime('%d/%m %H:%M')
             else:
                 next_fixture_opponent = next_fixture['team_1_id']
-                next_fixture_time = next_fixture['date_time_fixture'].strftime('%d/%m %H:%M')
-
+                next_fixture_time = next_fixture['date_time_fixture'] + datetime.timedelta(hours=1)
+                next_fixture_time = next_fixture_time.strftime('%d/%m %H:%M')
+                
         if team.is_trading_open():
             total_invested = round(team.current_price * team.number_of_shares_held,2)
         else:
