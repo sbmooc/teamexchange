@@ -83,7 +83,7 @@ class Team(models.Model):
 
         try:
             time_of_cut_off = self.next_fixture()['date_time_fixture'] - datetime.timedelta(minutes=15)
-            if datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1) > time_of_cut_off:
+            if datetime.datetime.now(datetime.timezone.utc) > time_of_cut_off:
                 return False
             else:
                 return True
