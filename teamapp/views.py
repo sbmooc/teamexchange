@@ -119,8 +119,6 @@ def profile(request):
 def leaderboard(request):
 
 
-    users_set = User.objects.all()
-
     player_users = User.objects.all().filter(is_superuser=False)
 
     number_of_users = User.objects.all().filter(is_superuser=False).count()
@@ -129,24 +127,21 @@ def leaderboard(request):
 
     leaderboard = {}
 
-    for position, x in enumerate(users_set):
+    for position, x in enumerate(player_users):
 
-        if x.is_superuser:
-            continue
-        else:
-            position = position
-            id = x.id
-            first_name = x.first_name
-            last_name = x.last_name
-            user_invested = x.profile.total_invested
-            user_cash = x.profile.cash_avaliable
-            if user_invested == None:
-                user_invested = 0
-            if user_cash == None:
-                user_cash = 0
-            total_money = user_invested + user_cash
+        position = position
+        id = x.id
+        first_name = x.first_name
+        last_name = x.last_name
+        user_invested = x.profile.total_invested
+        user_cash = x.profile.cash_avaliable
+        if user_invested == None:
+            user_invested = 0
+        if user_cash == None:
+            user_cash = 0
+        total_money = user_invested + user_cash
 
-            leaderboard[id]=[position+1, first_name, last_name, round(total_money,2)]
+        leaderboard[id]=[position+1, first_name, last_name, round(total_money,2)]
 
 
 
