@@ -30,7 +30,7 @@ def index(request):
                 next_fixture_opponent = next_fixture['team_1_id']
                 next_fixture_time = next_fixture['date_time_fixture'] + datetime.timedelta(hours=1)
                 next_fixture_time = next_fixture_time.strftime('%d/%m %H:%M')
-                
+
         if team.is_trading_open():
             total_invested = round(team.current_price * team.number_of_shares_held,2)
         else:
@@ -120,8 +120,9 @@ def profile(request):
 @login_required
 def leaderboard(request):
 
-
-    player_users = User.objects.all().filter(is_superuser=False)
+    ordered_users = Profile.objects.extra(
+    select={'fieldsum':'total_invested + cash_avaliable'},
+    order_by=('-fieldsum',))
 
     number_of_users = User.objects.all().filter(is_superuser=False).count()
 
@@ -129,21 +130,27 @@ def leaderboard(request):
 
     leaderboard = {}
 
-    for position, x in enumerate(player_users):
+    for position, x in enumerate(ordered_users):
 
-        position = position
-        id = x.id
-        first_name = x.first_name
-        last_name = x.last_name
-        user_invested = x.profile.total_invested
-        user_cash = x.profile.cash_avaliable
-        if user_invested == None:
-            user_invested = 0
-        if user_cash == None:
-            user_cash = 0
-        total_money = user_invested + user_cash
+        if x.user.is_superuser:
+            continue
+        else:
+            position = position
+            id = x.id
+            first_name = x.user.first_name
+            last_name = x.user.last_name
+            user_invested = x.total_invested
+            user_cash = x.cash_avaliable
+            if user_invested == None:
+                user_invested = 0
+            if user_cash == None:
+                user_cash = 0
+            total_money = user_invested + user_cash
 
-        leaderboard[id]=[position+1, first_name, last_name, round(total_money,2)]
+            leaderboard[id]=[position+1, first_name, last_name, round(total_money,2)]
+
+
+
 
 
 
