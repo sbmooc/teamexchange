@@ -123,9 +123,9 @@ def leaderboard(request):
 
     player_users = User.objects.all().filter(is_superuser=False)
 
-    number_of_users = len(player_users)
+    number_of_users = User.objects.all().filter(is_superuser=False).count()
 
-    money_in_game = 20 * len(player_users)
+    money_in_game = 20 * number_of_users
 
     leaderboard = {}
 
