@@ -19,6 +19,26 @@ def share_price_change(team):
 
     return round(percentage_change,2) * 100
 
+def user_value_change(user):
+
+    user = Profile.objects.get(user=user)
+
+    last_value = HistoricalInvestment.objects.filter(user=user).order_by('-datetime')[0]
+    print(last_value)
+
+    current_investments_value = user.total_invested
+
+    current_cash = user.cash_avaliable
+
+    last_total = last_value.total_value_of_investments + last_value.total_cash_avaliable
+    print(last_total)
+    current_total = current_cash + current_investments_value
+    print(current_total)
+
+    percentage_change = (current_total - last_total)/last_total
+
+    return round(percentage_change,2) * 100
+
 def percentage_change_string(percentage):
 
     if percentage > 0:
@@ -183,13 +203,9 @@ def leaderboard(request):
                 user_cash = 0
             total_money = user_invested + user_cash
 
-            leaderboard[id]=[position+1, first_name, last_name, round(total_money,2)]
+            percentage_change = percentage_change_string(user_value_change(x.id))
 
-
-
-
-
-
+            leaderboard[id]=[position+1, first_name, last_name, round(total_money,2), percentage_change]
 
     return render(request,'leaderboard.html',context={'users':leaderboard,'money_in_game':money_in_game,'number_of_users':number_of_users})
 
