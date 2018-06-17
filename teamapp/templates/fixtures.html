@@ -2,37 +2,46 @@
 {% block content %}
 <div class="page-container">
   <div class='fixtures_box'>
-    
+    {% for fixture, data in fixtures_data.items %}
     <div class='individual_fixture'>
       <table class='pure-table fixture_table'>
         <tr>
-          <td>17th June, 8pm</td>
-          <td><img class='pure-img' src='https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg'></td>
-          <td><img class='pure-img' src='https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg'></td>
+          <td>{{data.date_time}}</td>
+          <td><img class='pure-img' src='{{data.team_1_image}}'></td>
+          <td><img class='pure-img' src='{{data.team_2_image}}'></td>
         </tr>
         <tr>
           <tr>
             <td></td>
-            <td>AUS</td>
-            <td>ARG</td>
+            <td>{{data.team_1}}</td>
+            <td>{{data.team_2}}</td>
           </tr>
-
+          {% if data.trading_is_closed %}
+          <tr> <td colspan = 3 style='background: black; color: white'>Trading closed </td></tr>
+          {% endif %}
           <td> Price</td>
-          <td> 0.16</td>
-          <td> 0.15</td>
+          <td> {{data.team_1_price|floatformat:3}}</td>
+          <td> {{data.team_2_price|floatformat:3}}</td>
         </tr>
         <tr>
           <td> Your investment</td>
-          <td> 7.50</td>
-          <td> 0.00</td>
+          <td> £{{data.team_1_investment|floatformat:2}}</td>
+          <td> £{{data.team_2_investment|floatformat:2}}</td>
         </tr>
-        <tr> <td colspan = 3 style='background: black; color: white'>Trading closed </td></tr>
-        <tr> <td> Total Invested </td> <td> £34</td>  <td> £22</td></tr>
-        <tr> <td> Win </td> <td> 34%</td>  <td> 24%</td></tr>
-        <tr> <td> Lose </td> <td> -50%</td>  <td> 24%</td></tr>
-        <tr> <td> Draw </td> <td> 34%</td>  <td> 24%</td></tr>
+        {% if data.trading_is_closed %}
+        <!-- <tr> <td colspan = 3 style='background: black; color: white'>Trading closed </td></tr> -->
+        <tr> <td> Total Invested </td> <td>£{{data.team_1_total|floatformat:2}}</td>  <td> £{{data.team_2_total|floatformat:2}}</td></tr>
+        <tr> <td colspan = 3 style='background: black; color: white'>Possible change for your portfolio </td></tr>
+        <tr> <td> Win </td> <td> {{data.team_1_win|floatformat:2}}</td>  <td>  {{data.team_2_win|floatformat:2}}</td></tr>
+        <tr> <td> Draw </td> <td> {{data.team_1_draw|floatformat:2}}</td>  <td> {{data.team_2_draw|floatformat:2}}</td></tr>
+        <tr> <td> Lose </td> <td> {{data.team_1_loss|floatformat:2}}</td>  <td> {{data.team_2_loss|floatformat:2}}</td></tr>
+        {% else %}
+        <tr> <td colspan = 3 style='background: black; color: white'>Trading closes 15 mins before K.O </td></tr>
+        {% endif %}
+
       </table>
     </div>
+    {% endfor %}
     <div class='individual_fixture'>
 
       <table class='pure-table fixture_table'>

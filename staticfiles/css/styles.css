@@ -46,8 +46,15 @@ body {
 	max-height: 30px
 }
 
-.fixture_table{
+@media(max-width: 450px){
+
+	.fixture_table{
 	width: 40%
+}
+}
+
+.fixture_table {
+	width: 100%
 }
 
 /* table {

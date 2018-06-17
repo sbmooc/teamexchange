@@ -25,16 +25,16 @@ def user_value_change(user):
     user = Profile.objects.get(user=user)
 
     last_value = HistoricalInvestment.objects.filter(user=user).order_by('-datetime')[0]
-    print(last_value)
+    # print(last_value)
 
     current_investments_value = user.total_invested
 
     current_cash = user.cash_avaliable
 
     last_total = last_value.total_value_of_investments + last_value.total_cash_avaliable
-    print(last_total)
+    # print(last_total)
     current_total = current_cash + current_investments_value
-    print(current_total)
+    # print(current_total)
 
     percentage_change = (current_total - last_total)/last_total
 
@@ -152,7 +152,7 @@ def profile(request):
 
     user_teams_dictionary = {}
 
-    print(user_teams.items())
+    # print(user_teams.items())
 
     for team, shares in user_teams.items():
 
@@ -257,6 +257,8 @@ def fixtures(request):
 
         try:
             user_shares_team_1 = user.users_teams_investments()[fixture.team_1]
+            print(user_shares_team_1)
+            print(user.users_teams_investments())
         except KeyError:
             user_shares_team_1 = 0
 
@@ -268,22 +270,33 @@ def fixtures(request):
         user_team_1_investment = user_shares_team_1 * team_1_price
         user_team_2_investment = user_shares_team_2 * team_2_price
 
+        user_team_1_investment = int(user_team_1_investment)
+
+
         if round == 'gp':
             round_percentage = Decimal(0.5)
         else:
             round_percentage = Decimal(1)
 
-        fixtures_dictionary[id] = {'date_time':date_time,
+        fixtures_dictionary[id] =  {'date_time':date_time,
                                    'team_1': team_1,
                                    'team_2':team_2,
                                    'team_1_image':team_1_image,
                                    'team_2_image':team_2_image,
-                                   'is_trading_closed':trading_is_closed,
+                                   'trading_is_closed':trading_is_closed,
                                    'fixture_complete':fixture_complete,
-                                   }
+                                   'team_1_price':team_1_price,
+                                   'team_2_price':team_2_price,
+                                   'team_1_total':team_1_total,
+                                   'team_2_total':team_2_total,
+                                   'team_1_investment': user_team_1_investment,
+                                   'team_2_investment': user_team_2_investment}
+
+        # print(fixtures_dictionary)
 
         if team_1_total == 0 or team_2_total == 0:
             no_value_in_one_team = True
+
         else:
             team_1_win_change = (((team_2_total * round_percentage) + team_1_total) / team_1_total) * user_team_1_investment
             team_2_win_change = (((team_1_total * round_percentage) + team_2_total) / team_2_total) * user_team_2_investment
@@ -295,12 +308,14 @@ def fixtures(request):
             team_1_loss_change = user_team_1_investment - ((round_percentage) * user_team_1_investment)
             team_2_loss_change = user_team_2_investment - ((round_percentage) * user_team_2_investment)
 
-            fixtures_dictionary[id] = {'team_1_win' : team_1_win_change,
+            fixtures_dictionary[id].update({'team_1_win' : team_1_win_change,
                                        'team_2_win': team_2_win_change,
                                        'team_1_draw': team_1_draw_change,
                                        'team_2_draw': team_2_draw_change,
                                        'team_1_loss': team_1_loss_change,
-                                       'team_2_loss': team_2_loss_change}
+                                       'team_2_loss': team_2_loss_change})
+
+            # print(fixtures_dictionary)
 
 
     return render(request, 'fixtures.html', context={'fixtures_data': fixtures_dictionary})
