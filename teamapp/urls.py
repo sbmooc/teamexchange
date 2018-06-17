@@ -8,5 +8,6 @@ urlpatterns = [
     path('profile',views.profile,name='profile'),
     path('leaderboard',views.leaderboard,name='leaderboard'),
     path('faq',views.faq,name='faq'),
-    path('game_rules',views.game_rules,name='rules')
+    path('game_rules',views.game_rules,name='rules'),
+    path('fixtures',views.fixtures,name='fixtures')
 ]

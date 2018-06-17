@@ -11,6 +11,44 @@ body {
 
 }
 
+.fixtures_box {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center
+}
+
+.individual_fixture table{
+	margin: 0 auto
+}
+
+.teams_in_fixture{
+	display: flex;
+	flex-direction: row
+}
+
+.individual_fixture{
+	text-align: center;
+	margin-bottom: 2em
+
+}
+
+.fixture_table tr:first-child img{
+	margin: 0 auto
+}
+
+.fixture_table tr:first-child td:nth-child(3), .fixture_table tr:first-child td:nth-child(2) {
+	padding: 0.1em
+}
+
+.individual_fixture img {
+	max-height: 30px
+}
+
+.fixture_table{
+	width: 40%
+}
 
 /* table {
   position: relative
