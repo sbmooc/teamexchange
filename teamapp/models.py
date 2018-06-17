@@ -125,7 +125,7 @@ class HistoricalInvestment(models.Model):
 
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
-    datetime = models.DateTimeField(auto_now=True, help_text="Date and \
+    datetime = models.DateField(help_text="Date and \
                                             Time of transaction",
                                             verbose_name="Transaction Date")
 
@@ -137,7 +137,7 @@ class HistoricalInvestment(models.Model):
 
         total = self.total_value_of_investments + self.total_cash_avaliable
 
-        return self.user, self.datetime.strftime('%d/%m %H:%M'), total
+        return str(self.user) + " " + str(self.datetime.strftime('%d/%m')) + " " + str(total)
 
 def add_all_users_to_historical_investments_table():
 

@@ -9,6 +9,7 @@
                 <th><p>#</p></th>
                 <th><p>User</p></th>
                 <th><p>Total value</p></th>
+                <th><p>Daily Change</p></th>
             </tr>
         </thead>
         <tbody>
@@ -17,6 +18,7 @@
                     <td><p>{{data.0}}</p></td>
                     <td><p>{{data.1}}</p><p> {{data.2}}</p></td>
                     <td> <p>£{{data.3}}</p></td>
+                    <td><p> {{data.4|safe}}</p></td>
                 </tr>
             {% endfor %}
         </tbody>

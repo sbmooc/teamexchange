@@ -16,6 +16,14 @@ body {
   position: relative
 } */
 
+.green{
+  color: green
+}
+
+.red {
+  color: red
+}
+
 .rowlink::before {
 	content: "";
 	display: block;

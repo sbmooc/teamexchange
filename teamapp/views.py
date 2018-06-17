@@ -5,6 +5,34 @@ from .forms import BuySell
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 
+def share_price_change(team):
+
+    last_two_values = ClosingValue.objects.filter(team_code=team).order_by('-date_time')
+
+    if len(last_two_values) == 1:
+
+        percentage_change = 0
+
+    else:
+
+        percentage_change = (last_two_values[0].new_price - last_two_values[1].new_price)/(last_two_values[1].new_price)
+
+    return round(percentage_change,2) * 100
+
+def percentage_change_string(percentage):
+
+    if percentage > 0:
+
+        return "<span class='green'>" + str(percentage)+ "% </span>"
+
+    elif percentage == 0:
+        return str(percentage) + "%"
+
+    else:
+
+        return "<span class='red'>" + str(percentage)+ "% </span>"
+
+
 @login_required
 def index(request):
     """
@@ -36,7 +64,9 @@ def index(request):
         else:
             total_invested = "Trading open"
 
-        team_dictionary[team.team_code] = [team.image, round(team.current_price,3), next_fixture_opponent, next_fixture_time, total_invested]
+        percentage_change = percentage_change_string(share_price_change(team))
+
+        team_dictionary[team.team_code] = [team.image, round(team.current_price,3), percentage_change]
 
 
 
@@ -50,7 +80,6 @@ def team(request, team_code):
         team_code = get_object_or_404(Team, team_code = team_code)
 
         user = request.user
-
 
         team = Team.objects.filter(team_code=team_code).get()
 
@@ -82,9 +111,16 @@ def team(request, team_code):
 
         team_page = True
 
-        print(team_page)
+        percentage_change = share_price_change(team.team_code)
 
-        return render(request,'team.html',context={'total_value':round(total_value,2),'trading_open':is_trading_open, 'team_code':team.team_code, 'flag': team.image, 'current_price': round(team.current_price,2), 'number_shares': number_of_shares_held_in_team, 'form':form, 'team_page': team_page})
+        if percentage_change >= 0:
+            percentage_class = True
+            percentage_change = '+' + str(percentage_change) + '%'
+        else:
+            percentage_class = False
+            percentage_change = str(percentage_change) + '%'
+
+        return render(request,'team.html',context={'total_value':round(total_value,2),'trading_open':is_trading_open, 'team_code':team.team_code, 'flag': team.image, 'current_price': round(team.current_price,3), 'number_shares': number_of_shares_held_in_team, 'form':form, 'team_page': team_page, 'percentage_change':percentage_change, 'percentage_class': percentage_class})
 
 @login_required
 def profile(request):
