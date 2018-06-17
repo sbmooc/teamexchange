@@ -7,6 +7,8 @@
 
 {% block content %}
 
+<div id='sign_up_logo'><img class='pure-img' src="{% static 'images/logo.png' %}"></div>
+
 <h1>{% trans "Log In" %}</h1>
 
 {% get_providers as socialaccount_providers %}
@@ -39,7 +41,6 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
   {% endfor %}
 {% endif %}-->
 
-<div class='sign_up_logo'><img class='pure-img' src="{% static 'images/logo.png' %}"></div>
 <form class="pure-form" method="POST" action="{% url 'account_login' %}">
   {% csrf_token %}
   {{ form }}

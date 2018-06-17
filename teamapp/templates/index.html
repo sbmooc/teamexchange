@@ -3,19 +3,19 @@
 <div class="page-container">
     <h1> Teams </h1>
     <table class="pure-table pure-table-horizontal team-table">
-        <thead>
+         <thead>
             <tr>
                 <th><p>Team</p></th>
                 <th><p>Share price</p></th>
-                <th><p>Next</p></th>
+                <!-- <th><p>Next</p></th> -->
             </tr>
         </thead>
         <tbody>
             {% for team, data in teams.items %}
                 <tr>
                     <td> <div class='team_photo'><a href='/teamapp/team/{{team}}' class='rowlink'><p>{{team}}</p></a> <img class='pure-img' src='{{data.0}}'></div></td>
-                    <td> <p>{{data.1}}</p></td>
-                    <td> <p>{{data.2}}</p><p>{{data.3}}</p></td>
+                    <td> <p>£{{data.1}}</p></td>
+                    <!-- <td> <p>{{data.2}}</p><p>{{data.3}}</p></td> -->
                 </tr>
             {% endfor %}
         </tbody>

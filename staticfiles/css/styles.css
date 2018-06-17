@@ -1,336 +1,350 @@
-body{
-    max-width: 800px;
-    height: 100vh;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
+
+
+body {
+	max-width: 800px;
+	height: 100vh;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+  font-family: 'Lato', sans-serif;
+
+
 }
+
 
 /* table {
   position: relative
 } */
 
-.rowlink::before{
-
-  content: "";
-display: block;
-position: absolute;
-left: 0;
-width: 100%;
-height: 2em;
+.rowlink::before {
+	content: "";
+	display: block;
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 2em;
 }
 
-#footer_email{
-  word-break: break-all
+#footer_email {
+	word-break: break-all
 }
 
-.sign_up_logo{
-  width: 30px
+#sign_up_logo {
+	max-width: 200px
 }
 
-label[for=id_password], label[for=id_login]{
-  display: none
+label[for=id_password],
+label[for=id_login] {
+	display: none
 }
 
-#message_bar{
-  background-color: red;
-  /* padding: 1%; */
-  margin-bottom: 2%;
-  width: 100%;
-  padding: 0.5% 1%;
-  box-sizing: border-box;
-
+#message_bar {
+	background-color: red;
+	/* padding: 1%; */
+	margin-bottom: 2%;
+	width: 100%;
+	padding: 0.5% 1%;
+	box-sizing: border-box;
 }
 
 .hide_no_messages {
-  display: none
+	display: none
 }
 
 .show_messages {
-  display: block !important
+	display: block !important
 }
 
 #base_header_background {
-    width: 800px;
-    position: fixed;
-    flex: column
+	width: 800px;
+	position: fixed;
+	flex: column
 }
 
 @media(max-width: 800px) {
-    #base_header_background, #base_header, #sub_header {
-        width: 100%
-    }
+	#base_header_background,
+	#base_header,
+	#sub_header {
+		width: 100%
+	}
 }
 
 @media(max-width: 450px) {
-    #sub_header, #footer {
-        justify-content: space-between;
-    }
-    #team_chart{
-        height: 250px;
-    }
+	#sub_header,
+	#footer {
+		justify-content: space-between;
+	}
+	#team_chart {
+		height: 250px;
+	}
 }
+
+
 /*Header bar*/
 
-#base_header{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin:0;
-    padding: 0;
-    background-color: #42515A;
-    box-shadow: 0px 3px 2px #888888;
+#base_header {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin: 0;
+	padding: 0;
+	background-color: #42515A;
+	box-shadow: 0px 3px 2px #888888;
 }
 
 #base_header div {
-    float: left;
+	float: left;
 }
 
 #base_header div a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 15px 15px;
-    text-decoration: none;
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 15px 15px;
+	text-decoration: none;
 }
 
 #base_header div a:hover:not(.active) {
-    background-color: #111;
+	background-color: #111;
 }
 
-
 .money p {
-    text-align: right;
-    margin-top: 0px;
-    margin-bottom: 3px;
-/*    padding-left: 0px;
+	text-align: right;
+	margin-top: 0px;
+	margin-bottom: 3px;
+	/*    padding-left: 0px;
     padding-right: 20px;*/
 }
 
 .logo {
-max-width: 90px
+	max-width: 90px
 }
 
 .header .logo_list {
-    padding: 0px 0px;
+	padding: 0px 0px;
 }
+
 
 /*Sub-header bar*/
 
 #sub_header {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin:0;
-    padding: 0;
-    background-color: #40798C;
-    box-shadow: 0px 3px 2px #888888;
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background-color: #40798C;
+	box-shadow: 0px 3px 2px #888888;
 }
 
 #sub_header div {
-    float: left;
-    background-color: #40798C;
+	float: left;
+	background-color: #40798C;
 }
 
-#sub_header div a{
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 20px 20px;
-    text-decoration: none;
+#sub_header div a {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 20px 20px;
+	text-decoration: none;
 }
 
 #sub_header div a:hover:not(.active) {
-    background-color: #111;
+	background-color: #111;
 }
 
 #active {
-    background-color: #FF6978;
-    font-weight: bold;
+	background-color: #FF6978;
+	font-weight: bold;
 }
+
 
 /*Footer bar*/
 
 #footer {
-    display: flex;
-    flex-direction: row;
-    flex-shrink: 0;
-    width: 100%;
-    margin:0;
-    margin-top: 20px;
-    padding: 0;
-    background-color: gray;
-    /* position: absolute;
+	display: flex;
+	flex-direction: row;
+	flex-shrink: 0;
+	width: 100%;
+	margin: 0;
+	margin-top: 20px;
+	padding: 0;
+	background-color: gray;
+	/* position: absolute;
     bottom: 0 */
 }
 
 #footer div {
-    float: left;
-    background-color: gray;
+	float: left;
+	background-color: gray;
 }
 
 #footer div a {
-    display: block;
-    color: #333333;
-    text-align: center;
-    padding: 15px 20px;
-    text-decoration: none;
+	display: block;
+	color: #333333;
+	text-align: center;
+	padding: 15px 20px;
+	text-decoration: none;
 }
 
 #footer div a:hover:not(.active) {
-    background-color: #9b9b9b;
+	background-color: #9b9b9b;
 }
 
-
-#profile_buttons{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  flex-direction: row;
-  width: 100%
+#profile_buttons {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	flex-direction: row;
+	width: 100%
 }
 
 #profile_buttons * {
-  margin: 8px
+	margin: 8px
 }
 
 .main {
-    margin-top: 150px;
-    flex: 1 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	margin-top: 150px;
+	flex: 1 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
-#team_data{
-  width: 100%
+#team_data {
+	width: 100%
 }
 
-#team_headline{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%
+#team_headline {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%
 }
 
-#team_headline img{
-    width: 40%;
-    max-width: 200px;
-    height: 40%;
-    box-shadow: 1px 3px 3px #888888;
+#team_headline img {
+	width: 40%;
+	max-width: 200px;
+	height: 40%;
+	box-shadow: 1px 3px 3px #888888;
 }
 
-#team_chart{
-  margin-top: 5%;
-  width: 100%;
-  height: 400px;
-  /*background: blue*/
+#team_chart {
+	margin-top: 5%;
+	width: 100%;
+	height: 400px;
+	/*background: blue*/
 }
 
 .pure-form .pure-radio {
-  display: inline-block;
+	display: inline-block;
 }
 
-.pure-form{
-  display: flex;
-  justify-content: space-between;
-  max-width: 60%;
-  flex-wrap: wrap
+.pure-form {
+	display: flex;
+	justify-content: space-between;
+	max-width: 60%;
+	flex-wrap: wrap
 }
 
 .pure-form * {
-  margin: 3% 3% 3% 0
+	margin: 3% 3% 3% 0
 }
 
-#id_number_of_shares{
-  max-width: 120px
+#id_number_of_shares {
+	max-width: 120px
 }
 
 table {
-    width: 100%;
+	width: 100%;
 }
-
 
 th {
-  background: #42515A;
-  color: #FFFFFF
+	background: #42515A;
+	color: #FFFFFF
 }
 
-th, td {
-  text-align: center;
+th,
+td {
+	text-align: center;
 }
 
 .team_photo {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  /*box-shadow: 5px 10px;*/
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+  margin: 0.5em
+	/*box-shadow: 5px 10px;*/
 }
 
-.team_photo img, .trade_photo{
-  width: 2em;
-  box-shadow: 1px 2px 2px #888888
+.team_photo img,
+.trade_photo {
+	width: 2em;
+	box-shadow: 1px 2px 2px #888888
 }
 
-@media(min-width: 450px){
-  .team_photo img {
-    margin-left: 8px
-  }
+@media(min-width: 450px) {
+	.team_photo img {
+		margin-left: 8px
+	}
 }
 
 tr:hover {
-    background: #FF6978
-  }
+	background: #FF6978
+}
 
 @media(max-width: 450px) {
-.pure-table td, .pure-table th {
-    padding: 0.2em;
-  }
-
-
-.pure-table td:first-child, .pure-table th:first-child {
-    padding-top, padding-bottom: .5em;
-    padding-left: 0.2em;
+	.pure-table td,
+	.pure-table th {
+		padding: 0.2em;
+	}
+	.pure-table td:first-child,
+	.pure-table th:first-child {
+		padding-top,
+		padding-bottom: .5em;
+		padding-left: 0.2em;
+	}
+	.pure-table .team_photo {
+		flex-direction: column
+	}
 }
 
-.pure-table img{
-  display: none
-}
-}
 
 /*Table formatting*/
 
 .team-table {
-  table-layout: fixed;
+	table-layout: fixed;
 }
 
 .team-table a {
-  text-decoration: none;
-  color: black;
-  display: block;
+	text-decoration: none;
+	color: black;
+	display: block;
 }
 
 .team-table td {
-  padding: 0
+	padding: 0
 }
 
 .team-table th {
-    height: 70px;
-    padding: 0px;
-    vertical-align: middle;
+	height: 70px;
+	padding: 0px;
+	vertical-align: middle;
 }
 
 .page-container {
-    width: 90%
+	width: 90%
 }
 
-.fixture-date{
-    font-size: 0.6em;
-    color: gray
+.fixture-date {
+	font-size: 0.6em;
+	color: gray
 }
+
 
 /* body {
   font-family: 'Lato', sans-serif;
@@ -338,64 +352,54 @@ tr:hover {
 } */
 
 .faq {
-
-  max-width: 600px
+	max-width: 600px
 }
 
-.faq .box{
-  margin: 0 !important
+.faq .box {
+	margin: 0 !important
 }
 
-
-
-
-#mc_embed_signup{
-text-align: left;
+#mc_embed_signup {
+	text-align: left;
 }
 
-#mc_embed_signup input{
-margin-bottom: 6%
+#mc_embed_signup input {
+	margin-bottom: 6%
 }
-
-
-
-
 
 .box {
-  max-width: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  margin: 3% 3% 0 3%;
-  border: 2px solid black;
-  padding: 2%;
-  text-align: center
+	max-width: 500px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: row;
+	margin: 3% 3% 0 3%;
+	border: 2px solid black;
+	padding: 2%;
+	text-align: center
 }
 
-@media (max-width: 500px){
-
-  .box{
-    flex-wrap: wrap
-  }
-  .box img{
-    max-width: 100% !important;
-    margin: 0 !important
-  }
-  .box p {
-    width: 100%
-  }
+@media (max-width: 500px) {
+	.box {
+		flex-wrap: wrap
+	}
+	.box img {
+		max-width: 100% !important;
+		margin: 0 !important
+	}
+	.box p {
+		width: 100%
+	}
 }
 
-
-.box img{
-  max-width: 60%;
-  margin-left: 5%
+.box img {
+	max-width: 60%;
+	margin-left: 5%
 }
 
-.all-boxes{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center
+.all-boxes {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center
 }

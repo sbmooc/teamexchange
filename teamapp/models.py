@@ -117,7 +117,7 @@ class Team(models.Model):
 
         return self.team_code
 
-class HistoricalInvestments(models.Model):
+class HistoricalInvestment(models.Model):
 
     # Need to use celery to set this up
 
@@ -130,6 +130,22 @@ class HistoricalInvestments(models.Model):
                                             verbose_name="Transaction Date")
 
     total_value_of_investments = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+
+    total_cash_avaliable = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+
+    def __str__(self):
+
+        total = self.total_value_of_investments + self.total_cash_avaliable
+
+        return self.user, self.datetime.strftime('%d/%m %H:%M'), total
+
+def add_all_users_to_historical_investments_table():
+
+    all_users = Profile.objects.all()
+
+    for user in all_users:
+
+        HistoricalInvestment.objects.create(user=user, total_value_of_investments = user.total_invested, total_cash_avaliable = user.cash_avaliable)
 
 class Investment(models.Model):
 
@@ -401,17 +417,24 @@ class ClosingValue(models.Model):
                                             Time of price",
                                      verbose_name="Closing Price Date")
 
-    price = models.IntegerField(help_text="Price",
-                                        verbose_name="Price")
+    number_of_shares_held = models.IntegerField(help_text="Number of shares held",
+                                                verbose_name="Number shares held", null=True)
 
-    def deposit_closing_value(self):
-        latest_price = Investment.generate_latest_price(self.team_code)
-        ClosingValue.objects.create(team_code=self, price=latest_price)
-
+    new_price = models.DecimalField(help_text = "Current Price of the team",
+                                        verbose_name = "Current Price", decimal_places=8, max_digits=50, null=True)
 
     def __str__(self):
 
-        return self.date_time.strftime('%d/%m/%Y') + ' - ' + str(self.team_code)+ ' - ' + str(self.price)
+        return self.date_time.strftime('%d/%m/%Y') + ' - ' + str(self.team_code)+ ' - ' + str(self.new_price)
+
+def deposit_closing_value(team_code):
+
+    team = Team.objects.get(team_code = team_code)
+    latest_price = Investment.generate_latest_price(team)
+    ClosingValue.objects.create(team_code=team, new_price=latest_price, number_of_shares_held = team.number_of_shares_held)
+
+
+
 
 @receiver(post_save, sender=Investment)
 def update_total_no_shares(sender, instance, created, **kwargs):
@@ -456,6 +479,8 @@ def update_users_investments(sender, instance, created, **kwargs):
 def init_winner(sender, instance, **kwargs):
 
     if Team.objects.get(team_code=instance.team_1).number_of_shares_held == 0 or Team.objects.get(team_code=instance.team_2).number_of_shares_held == 0:
+        deposit_closing_value(instance.team_1)
+        deposit_closing_value(instance.team_2)
         pass
 
     else:
@@ -468,6 +493,8 @@ def init_winner(sender, instance, **kwargs):
                 Fixture.update_share_prices(new_prices)
             update_shares_for_users(instance.team_1)
             update_shares_for_users(instance.team_2)
+            deposit_closing_value(instance.team_1)
+            deposit_closing_value(instance.team_2)
         except ObjectDoesNotExist:
             pass
 
