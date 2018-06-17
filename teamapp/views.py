@@ -24,14 +24,18 @@ def user_value_change(user):
 
     user = Profile.objects.get(user=user)
 
-    last_value = HistoricalInvestment.objects.filter(user=user).order_by('-datetime')[0]
+    try:
+        last_value = HistoricalInvestment.objects.filter(user=user).order_by('-datetime')[0]
+        last_total = last_value.total_value_of_investments + last_value.total_cash_avaliable
+
+    except IndexError:
+        last_total = 20
     # print(last_value)
 
     current_investments_value = user.total_invested
 
     current_cash = user.cash_avaliable
 
-    last_total = last_value.total_value_of_investments + last_value.total_cash_avaliable
     # print(last_total)
     current_total = current_cash + current_investments_value
     # print(current_total)
