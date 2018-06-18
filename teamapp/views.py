@@ -238,9 +238,8 @@ def fixtures(request):
 
 
     for fixture in all_fixtures:
-        print(counter)
-
-        if fixture.date_time_fixture.date() == today and counter == 1:
+        
+        if fixture.date_time_fixture.date() == today and counter == 1 and fixture.winner == None:
 
             fixture_is_today = True
 
