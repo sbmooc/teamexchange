@@ -42,8 +42,8 @@ body {
 
 .individual_fixture{
 	text-align: center;
-	margin: 1em 1em 0em 0em
-
+	margin: 1em 1em 0em 0em;
+	width: 223px
 }
 
 .fixture_table tr:first-child img{
