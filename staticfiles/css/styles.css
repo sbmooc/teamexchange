@@ -7,9 +7,13 @@ body {
 	display: flex;
 	flex-direction: column;
   font-family: 'Lato', sans-serif;
-	font-size: 0.8em
 
+}
 
+@media(max-width: 450px){
+	body{
+		font-size: 0.8em
+	}
 }
 
 
@@ -25,6 +29,12 @@ body {
 .highlight_fixture{
 	border: solid red 4px;
 	margin: 5em
+}
+
+.leaderboard td:first-child{
+	width: 25px;
+	padding: 0;
+	margin: 0
 }
 
 .individual_fixture table{
@@ -43,7 +53,7 @@ body {
 .individual_fixture{
 	text-align: center;
 	margin: 1em 1em 0em 0em;
-	width: 223px
+	width: 280px
 }
 
 .fixture_table tr:first-child img{
@@ -104,7 +114,7 @@ label[for=id_login] {
 }
 
 #message_bar {
-	background-color: red;
+	background-color: #FF6978;
 	/* padding: 1%; */
 	margin-bottom: 2%;
 	width: 100%;
@@ -176,12 +186,16 @@ label[for=id_login] {
 	display: block;
 	color: white;
 	text-align: center;
-	padding: 15px 15px;
+	padding: 10px 15px;
 	text-decoration: none;
 }
 
 #base_header div a:hover:not(.active) {
 	background-color: #111;
+}
+
+.team-table a p {
+	margin: 3px
 }
 
 .money p {
@@ -283,7 +297,7 @@ label[for=id_login] {
 }
 
 .main {
-	margin-top: 150px;
+	margin-top: 145px;
 	flex: 1 0 auto;
 	display: flex;
 	flex-direction: column;
@@ -306,6 +320,7 @@ label[for=id_login] {
 	max-width: 200px;
 	height: 40%;
 	box-shadow: 1px 3px 3px #888888;
+	margin-top: 20px
 }
 
 #team_chart {
@@ -364,9 +379,10 @@ td {
 	box-shadow: 1px 2px 2px #888888
 }
 
-@media(min-width: 450px) {
+
+@media(max-width: 450px) {
 	.team_photo img {
-		margin-left: 8px
+		margin-bottom: 0px
 	}
 }
 
@@ -415,7 +431,7 @@ a.anchor {
 }
 
 .team-table th {
-	height: 70px;
+	height: 50px;
 	padding: 0px;
 	vertical-align: middle;
 }
