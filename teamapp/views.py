@@ -216,7 +216,7 @@ def leaderboard(request):
 
 def fixtures(request):
 
-    all_fixtures = Fixture.objects.all()
+    all_fixtures = Fixture.objects.all().order_by('date_time_fixture')
 
     user = Profile.objects.get(user=request.user)
 
@@ -245,10 +245,11 @@ def fixtures(request):
             fixture_complete = True
             team_1_goals = fixture.team_1_goals
             team_2_goals = fixture.team_2_goals
-            fixtures_dictionary[id] = {'team_1_goals':team_1_goals,
-                                       'team_2_goals':team_2_goals}
+
         else:
             fixture_complete = False
+            team_1_goals = None
+            team_2_goals = None
 
         team_1_shares = Team.objects.get(team_code=fixture.team_1).number_of_shares_held
         team_2_shares = Team.objects.get(team_code=fixture.team_2).number_of_shares_held
@@ -294,7 +295,10 @@ def fixtures(request):
                                    'team_1_total':team_1_total,
                                    'team_2_total':team_2_total,
                                    'team_1_investment': user_team_1_investment,
-                                   'team_2_investment': user_team_2_investment}
+                                   'team_2_investment': user_team_2_investment,
+                                   'team_1_goals':team_1_goals,
+                                   'team_2_goals':team_2_goals,
+                                   'fixture_complete' : fixture_complete}
 
         # print(fixtures_dictionary)
 

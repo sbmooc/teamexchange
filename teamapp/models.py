@@ -125,7 +125,7 @@ class HistoricalInvestment(models.Model):
 
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
-    datetime = models.DateField(help_text="Date and \
+    datetime = models.DateField(auto_now=True,help_text="Date and \
                                             Time of transaction",
                                             verbose_name="Transaction Date")
 
