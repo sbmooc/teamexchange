@@ -374,6 +374,13 @@ td {
 	background: #FF6978
 }
 
+a.anchor {
+    display: block;
+    position: relative;
+    top: -175px;
+    visibility: hidden;
+}
+
 @media(max-width: 450px) {
 	.pure-table td,
 	.pure-table th {

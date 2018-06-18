@@ -4,8 +4,10 @@
   <div class='fixtures_box'>
     {% for fixture, data in fixtures_data.items %}
 
-    <div class='individual_fixture {% if data.trading_is_closed %} highlight_fixture {% endif %}' id='{% if data.fixture_is_today %}today_fixture{% endif %}'>
-
+    <div class='individual_fixture {% if data.trading_is_closed %} highlight_fixture {% endif %}'>
+      {% if data.fixture_is_today %}
+      <a class="anchor" id="today_fixture"></a>
+      {% endif %}
       <table class='pure-table fixture_table'>
         <tr>
           <td>{{data.date_time.date}}<br>{{data.date_time.time}}</td>
