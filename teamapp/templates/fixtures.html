@@ -3,12 +3,14 @@
 <div class="page-container">
   <div class='fixtures_box'>
     {% for fixture, data in fixtures_data.items %}
-    <div class='individual_fixture'>
+
+    <div class='individual_fixture {% if data.trading_is_closed %} highlight_fixture {% endif %}' id='{% if data.fixture_is_today %}today_fixture{% endif %}'>
+
       <table class='pure-table fixture_table'>
         <tr>
-          <td>{{data.date_time}}</td>
-          <td><img class='pure-img' src='{{data.team_1_image}}'></td>
-          <td><img class='pure-img' src='{{data.team_2_image}}'></td>
+          <td>{{data.date_time.date}}<br>{{data.date_time.time}}</td>
+          <td><a href='/teamapp/team/{{data.team_1}}'><img class='pure-img' src='{{data.team_1_image}}'></a></td>
+          <td><a href='/teamapp/team/{{data.team_2}}'><img class='pure-img' src='{{data.team_2_image}}'></a></td>
         </tr>
         <tr>
           <tr>
@@ -30,15 +32,16 @@
           <td> {{data.team_1_price|floatformat:3}}</td>
           <td> {{data.team_2_price|floatformat:3}}</td>
         </tr>
+
+        {% if data.trading_is_closed %}
+        <!-- <tr> <td colspan = 3 style='background: black; color: white'>Trading closed </td></tr> -->
+        <tr> <td> Total Invested </td> <td>£{{data.team_1_total|floatformat:2}}</td>  <td> £{{data.team_2_total|floatformat:2}}</td></tr>
+        <tr> <td colspan = 3 style='background: black; color: white'>Possible change for your portfolio </td></tr>
         <tr>
           <td> Your investment</td>
           <td> £{{data.team_1_investment|floatformat:2}}</td>
           <td> £{{data.team_2_investment|floatformat:2}}</td>
         </tr>
-        {% if data.trading_is_closed %}
-        <!-- <tr> <td colspan = 3 style='background: black; color: white'>Trading closed </td></tr> -->
-        <tr> <td> Total Invested </td> <td>£{{data.team_1_total|floatformat:2}}</td>  <td> £{{data.team_2_total|floatformat:2}}</td></tr>
-        <tr> <td colspan = 3 style='background: black; color: white'>Possible change for your portfolio </td></tr>
         <tr> <td> Win </td> <td> {{data.team_1_win|floatformat:2}}</td>  <td>  {{data.team_2_win|floatformat:2}}</td></tr>
         <tr> <td> Draw </td> <td> {{data.team_1_draw|floatformat:2}}</td>  <td> {{data.team_2_draw|floatformat:2}}</td></tr>
         <tr> <td> Lose </td> <td> {{data.team_1_loss|floatformat:2}}</td>  <td> {{data.team_2_loss|floatformat:2}}</td></tr>

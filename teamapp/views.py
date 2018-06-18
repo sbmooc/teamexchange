@@ -232,13 +232,22 @@ def fixtures(request):
 
     user = Profile.objects.get(user=request.user)
 
+    counter = 1
 
 
 
 
     for fixture in all_fixtures:
+        print(counter)
 
+        if fixture.date_time_fixture.date() == today and counter == 1:
 
+            fixture_is_today = True
+
+            counter += -1
+
+        else:
+            fixture_is_today = False
 
 
         id = fixture.id
@@ -252,18 +261,7 @@ def fixtures(request):
         team_1_price = team_1.current_price
         team_2_price = team_2.current_price
 
-        try:
-            user_shares_team_1 = user.users_teams_investments()[str(team_1.team_code)]
-        except KeyError:
-            user_shares_team_1 = 0
 
-        try:
-            user_shares_team_2 = user.users_teams_investments()[str(team_1.team_code)]
-        except KeyError:
-            user_shares_team_2 = 0
-
-        user_team_1_investment = user_shares_team_1 * team_1_price
-        user_team_2_investment = user_shares_team_2 * team_2_price
 
 
         if fixture.winner != None:
@@ -285,13 +283,25 @@ def fixtures(request):
                                    'team_2_image':team_2_image,
                                    'team_1_price':team_1_price,
                                     'team_2_price':team_2_price,
-                                     'team_1_investment': user_team_1_investment,
-                                     'team_2_investment': user_team_2_investment,
                                    'fixture_complete':fixture_complete,
                                     'team_1_goals':team_1_goals,
-                                  'team_2_goals':team_2_goals,}
+                                  'team_2_goals':team_2_goals,
+                                  'fixture_is_today':fixture_is_today}
 
         if team_1.is_trading_open() is not True and team_2.is_trading_open() is not True:
+
+            try:
+                user_shares_team_1 = user.users_teams_investments()[team_1.team_code]
+            except KeyError:
+                user_shares_team_1 = 0
+
+            try:
+                user_shares_team_2 = user.users_teams_investments()[team_2.team_code]
+            except KeyError:
+                user_shares_team_2 = 0
+
+            user_team_1_investment = user_shares_team_1 * team_1_price
+            user_team_2_investment = user_shares_team_2 * team_2_price
 
             trading_is_closed = True
 
@@ -318,11 +328,13 @@ def fixtures(request):
                 team_2_win_change = (((team_1_total * round_percentage) + team_2_total) / team_2_total) * user_team_2_investment
 
                 new_value = (team_1_total + team_2_total)/ 2
-                team_1_draw_change = (new_value - team_1_total / team_1_total) * user_team_1_investment
-                team_2_draw_change = (new_value - team_2_total / team_2_total) * user_team_2_investment
+                team_1_draw_change = ((new_value - team_1_total) / team_1_total) * user_team_1_investment
+                team_2_draw_change = ((new_value - team_2_total) / team_2_total) * user_team_2_investment
 
-                team_1_loss_change = user_team_1_investment - ((round_percentage) * user_team_1_investment)
-                team_2_loss_change = user_team_2_investment - ((round_percentage) * user_team_2_investment)
+                team_1_loss_change = (user_team_1_investment - ((round_percentage) * user_team_1_investment)) * -1
+                print(user_team_1_investment)
+                print(round_percentage)
+                team_2_loss_change = (user_team_2_investment - ((round_percentage) * user_team_2_investment)) * -1
 
                 fixtures_dictionary[id].update({'team_1_win' : team_1_win_change,
                                            'team_2_win': team_2_win_change,
@@ -332,7 +344,9 @@ def fixtures(request):
                                            'team_2_loss': team_2_loss_change,
                                            'team_1_total':team_1_total,
                                            'team_2_total':team_2_total,
-                                           'trading_is_closed' :trading_is_closed})
+                                           'trading_is_closed' :trading_is_closed,
+                                            'team_1_investment': user_team_1_investment,
+                                            'team_2_investment': user_team_2_investment})
 
         else:
 
