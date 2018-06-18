@@ -12,11 +12,7 @@ body {
 
 }
 
-/* #today_fixture {
-	position: absolute;
-	margin-top: 60px;
-	top: 150px
-} */
+
 
 .fixtures_box {
 	display: flex;
@@ -33,6 +29,10 @@ body {
 
 .individual_fixture table{
 	margin: 0 auto
+}
+
+.individual_fixture table tr:hover{
+	background: none
 }
 
 .teams_in_fixture{
@@ -370,7 +370,7 @@ td {
 	}
 }
 
-tr:hover {
+.team-table tr:hover {
 	background: #FF6978
 }
 
