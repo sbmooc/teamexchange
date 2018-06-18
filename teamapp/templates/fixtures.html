@@ -16,6 +16,13 @@
             <td>{{data.team_1}}</td>
             <td>{{data.team_2}}</td>
           </tr>
+          {% if data.fixture_complete %}
+          <tr>
+            <td></td>
+            <td>{{data.team_1_goals}}</td>
+            <td>{{data.team_2_goals}}</td>
+          </tr>
+          {% else %}
           {% if data.trading_is_closed %}
           <tr> <td colspan = 3 style='background: black; color: white'>Trading closed </td></tr>
           {% endif %}
@@ -38,72 +45,11 @@
         {% else %}
         <tr> <td colspan = 3 style='background: black; color: white'>Trading closes 15 mins before K.O </td></tr>
         {% endif %}
+        {% endif %}
 
       </table>
     </div>
     {% endfor %}
-    <div class='individual_fixture'>
-
-      <table class='pure-table fixture_table'>
-        <tr>
-          <td>17th June, 8pm</td>
-          <td><img class='pure-img' src='https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg'></td>
-          <td><img class='pure-img' src='https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg'></td>
-        </tr>
-        <tr>
-          <tr>
-            <td></td>
-            <td>AUS</td>
-            <td>ARG</td>
-          </tr>
-
-          <td> Price</td>
-          <td> 0.16</td>
-          <td> 0.15</td>
-        </tr>
-        <tr>
-          <td> Your investment</td>
-          <td> 7.50</td>
-          <td> 0.00</td>
-        </tr>
-        <tr> <td colspan = 3 style='background: black; color: white'>Trading closed </td></tr>
-        <tr> <td> Total Invested </td> <td> £34</td>  <td> £22</td></tr>
-        <tr> <td> Win </td> <td> 34%</td>  <td> 24%</td></tr>
-        <tr> <td> Lose </td> <td> -50%</td>  <td> 24%</td></tr>
-        <tr> <td> Draw </td> <td> 34%</td>  <td> 24%</td></tr>
-      </table>
-    </div>
-    <div class='individual_fixture'>
-
-      <table class='pure-table fixture_table'>
-        <tr>
-          <td>17th June, 8pm</td>
-          <td><img class='pure-img' src='https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg'></td>
-          <td><img class='pure-img' src='https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg'></td>
-        </tr>
-        <tr>
-          <tr>
-            <td></td>
-            <td>AUS</td>
-            <td>ARG</td>
-          </tr>
-
-          <td> Price</td>
-          <td> 0.16</td>
-          <td> 0.15</td>
-        </tr>
-        <tr>
-          <td> Your investment</td>
-          <td> 7.50</td>
-          <td> 0.00</td>
-        </tr>
-        <tr> <td colspan = 3 style='background: black; color: white'>Trading closed </td></tr>
-        <tr> <td> Total Invested </td> <td> £34</td>  <td> £22</td></tr>
-        <tr> <td> Win </td> <td> 34%</td>  <td> 24%</td></tr>
-        <tr> <td> Lose </td> <td> -50%</td>  <td> 24%</td></tr>
-        <tr> <td> Draw </td> <td> 34%</td>  <td> 24%</td></tr>
-      </table>
-    </div>
   </div>
 </div>
 
