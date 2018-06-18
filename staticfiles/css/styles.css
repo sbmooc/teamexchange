@@ -150,7 +150,7 @@ label[for=id_login] {
 @media(max-width: 450px){
 
 #sub_header div a {
-			padding: 8px 8px !important
+			padding: 10px 10px !important
 		}
 
 }
@@ -436,7 +436,8 @@ a.anchor {
 } */
 
 .faq {
-	max-width: 600px
+	max-width: 600px;
+	padding: 5%
 }
 
 .faq .box {
