@@ -251,7 +251,7 @@ def fixtures(request):
 
 
         id = fixture.id
-        date_time = fixture.date_time_fixture
+        date_time = fixture.date_time_fixture + datetime.timedelta(hours=1)
         team_1 = Team.objects.get(team_code=fixture.team_1)
         team_2 = Team.objects.get(team_code=fixture.team_2)
         team_1_image = team_1.image
