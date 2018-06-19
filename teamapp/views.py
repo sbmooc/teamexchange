@@ -324,7 +324,8 @@ def fixtures(request):
 
             else:
                 team_1_win_change = ((((team_2_total * round_percentage) + team_1_total) - team_1_total) / team_1_total) * user_team_1_investment
-                team_2_win_change = ((((team_1_total * round_percentage) + team_2_total) -team_1_total) / team_2_total) * user_team_2_investment
+                team_2_win_change = ((((team_1_total * round_percentage) + team_2_total) - team_2_total) / team_2_total) * user_team_2_investment
+
 
                 new_value = (team_1_total + team_2_total)/ 2
                 team_1_draw_change = ((new_value - team_1_total) / team_1_total) * user_team_1_investment
