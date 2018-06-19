@@ -238,7 +238,7 @@ def fixtures(request):
 
 
     for fixture in all_fixtures:
-        
+
         if fixture.date_time_fixture.date() == today and counter == 1 and fixture.winner == None:
 
             fixture_is_today = True
@@ -323,17 +323,16 @@ def fixtures(request):
                 no_value_in_one_team = True
 
             else:
-                team_1_win_change = (((team_2_total * round_percentage) + team_1_total) / team_1_total) * user_team_1_investment
-                team_2_win_change = (((team_1_total * round_percentage) + team_2_total) / team_2_total) * user_team_2_investment
+                team_1_win_change = ((((team_2_total * round_percentage) + team_1_total) - team_1_total) / team_1_total) * user_team_1_investment
+                team_2_win_change = ((((team_1_total * round_percentage) + team_2_total) -team_1_total) / team_2_total) * user_team_2_investment
 
                 new_value = (team_1_total + team_2_total)/ 2
                 team_1_draw_change = ((new_value - team_1_total) / team_1_total) * user_team_1_investment
                 team_2_draw_change = ((new_value - team_2_total) / team_2_total) * user_team_2_investment
 
                 team_1_loss_change = (user_team_1_investment - ((round_percentage) * user_team_1_investment)) * -1
-                print(user_team_1_investment)
-                print(round_percentage)
                 team_2_loss_change = (user_team_2_investment - ((round_percentage) * user_team_2_investment)) * -1
+
 
                 fixtures_dictionary[id].update({'team_1_win' : team_1_win_change,
                                            'team_2_win': team_2_win_change,
