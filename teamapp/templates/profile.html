@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <div class="page-container">
     <h1> Your Profile </h1>
         <table class="pure-table pure-table-horizontal team-table">
           {% if empty_profile %}
           <h3> You don't have anything in your profile at the moment, go to the  <a href='/'> Exchange </a> </h3>
           {% else %}
+          <div id="chart_div"></div>
             <thead>
                 <tr>
                     <th><p>Team</p></th>
