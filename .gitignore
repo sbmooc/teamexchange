@@ -5,3 +5,4 @@ __pycache__
 local_settings.py
 .ds_store
 latest*
+download_database_script
