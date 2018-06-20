@@ -7,7 +7,7 @@
           {% if empty_profile %}
           <h3> You don't have anything in your profile at the moment, go to the  <a href='/'> Exchange </a> </h3>
           {% else %}
-          <div id="chart_div"></div>
+          <!-- <div id="chart_div"></div> -->
             <thead>
                 <tr>
                     <th><p>Team</p></th>
@@ -36,5 +36,61 @@
           <a href='/accounts/logout'><button class='pure-button pure-button-primary'>Log out</button></a>
         </div>
 </div>
+
+<script> google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('date', 'Date');
+      data.addColumn('number', 'In wallet');
+      data.addColumn('number', 'Invested');
+
+
+			/* Dummy data */
+      data.addRows([
+        {% autoescape off %}
+        {% for day in chart_data %}
+        [new Date({{day.0}}, {{day.1}}, {{day.2}}), {v: {{day.3}}, f: '£20'}, {v: {{day.4}}, f: '£0'}],
+        {% endfor %}
+        {% endautoescape %}
+      ]);
+
+      // {% for day in chart_data %}
+      //
+      // console.log({{day.0}})
+      //
+      // {% endfor %}
+
+
+      var options = {
+      	/* width: 600,
+      	height: 300, */
+        chartArea: {'width': '80%', 'height': '80%'},
+        backgroundColor: '#42515A',
+      	legend: {position: 'top', textStyle: {color: 'FFFFFF'}},
+      	isStacked: true,
+        series: {
+        	0: {color: 'D9D9E0'},
+          1: {color: 'FF6978'}
+          },
+        /* colors: ['gray', 'blue'], */
+        hAxis: {
+        	textStyle:{color: '#FFFFFF'}
+        },
+        vAxis: {
+          /* title: 'Value', */
+          textStyle:{color: '#FFFFFF'},
+          format: '£#,###.##'
+        }
+      };
+
+      var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+    }
+
+      </script>
 
 {% endblock %}

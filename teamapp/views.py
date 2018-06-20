@@ -5,6 +5,7 @@ from .forms import BuySell
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from decimal import *
+import json
 
 def share_price_change(team):
 
@@ -70,20 +71,6 @@ def index(request):
 
     for team in teams:
 
-        next_fixture = team.next_fixture()
-        if next_fixture == 'N/A':
-           next_fixture_opponent = 'N/A'
-           next_fixture_time = ''
-        else:
-            if team.team_code == next_fixture['team_1_id']:
-                next_fixture_opponent = next_fixture['team_2_id']
-                next_fixture_time = next_fixture['date_time_fixture'] + datetime.timedelta(hours=1)
-                next_fixture_time = next_fixture_time.strftime('%d/%m %H:%M')
-            else:
-                next_fixture_opponent = next_fixture['team_1_id']
-                next_fixture_time = next_fixture['date_time_fixture'] + datetime.timedelta(hours=1)
-                next_fixture_time = next_fixture_time.strftime('%d/%m %H:%M')
-
         if team.is_trading_open():
             total_invested = round(team.current_price * team.number_of_shares_held,2)
         else:
@@ -108,6 +95,21 @@ def team(request, team_code):
 
         team = Team.objects.filter(team_code=team_code).get()
 
+        next_fixture = team.next_fixture()
+
+        if next_fixture == 'N/A':
+           next_fixture_opponent = 'N/A'
+           next_fixture_time = ''
+        else:
+            if team.team_code == next_fixture['team_1_id']:
+                next_fixture_opponent = next_fixture['team_2_id']
+            else:
+                next_fixture_opponent = next_fixture['team_1_id']
+
+        next_fixture_time = next_fixture['date_time_fixture'] + datetime.timedelta(hours=1)
+        next_fixture_time = next_fixture_time.strftime('%d/%m %H:%M')
+
+
         user_profile = Profile.objects.get(user=user)
         try:
             number_of_shares_held_in_team = user_profile.users_teams_investments()[str(team_code)]
@@ -117,6 +119,24 @@ def team(request, team_code):
         total_value = team.number_of_shares_held * team.current_price
 
         is_trading_open = team.is_trading_open()
+
+        closing_values = ClosingValue.objects.all().filter(team_code=team)
+
+        closing_value_list = []
+
+        for value in closing_values:
+
+            year = value.date_time.year
+            month = value.date_time.month -1
+            day = value.date_time.day
+
+            closing_value_list = []
+
+            investment_list.extend((year,month,day,float(round(investment.total_value_of_investments,2)),float(round(investment.total_cash_avaliable,2))))
+
+            historical_investment_list.append(investment_list)
+
+
 
         if request.method=='POST':
 
@@ -129,7 +149,7 @@ def team(request, team_code):
                 new_shares = int(number_shares) * int(transaction_type) + number_of_shares_held_in_team
                 transaction_success = ""
                 messages.success(request, 'Transaction successful')
-                return render(request, 'team.html', context={'transaction_successful':transaction_success,'total_value':round(total_value,2),'trading_open':is_trading_open, 'team_code':team.team_code, 'flag': team.image, 'current_price': round(team.current_price,2), 'number_shares': new_shares, 'form':form})
+                return render(request, 'team.html', context={'transaction_successful':transaction_success,'total_value':round(total_value,2),'trading_open':is_trading_open, 'team_code':team.team_code, 'flag': team.image, 'current_price': round(team.current_price,2), 'number_shares': new_shares, 'form':form, 'next_fixture_opp': next_fixture_opponent, 'next_fixture_time': next_fixture_time})
 
         else:
             form = BuySell()
@@ -145,7 +165,7 @@ def team(request, team_code):
             percentage_class = False
             percentage_change = str(percentage_change) + '%'
 
-        return render(request,'team.html',context={'total_value':round(total_value,2),'trading_open':is_trading_open, 'team_code':team.team_code, 'flag': team.image, 'current_price': round(team.current_price,3), 'number_shares': number_of_shares_held_in_team, 'form':form, 'team_page': team_page, 'percentage_change':percentage_change, 'percentage_class': percentage_class})
+        return render(request,'team.html',context={'total_value':round(total_value,2),'trading_open':is_trading_open, 'team_code':team.team_code, 'flag': team.image, 'current_price': round(team.current_price,3), 'number_shares': number_of_shares_held_in_team, 'form':form, 'team_page': team_page, 'percentage_change':percentage_change, 'next_fixture_opp': next_fixture_opponent, 'next_fixture_time': next_fixture_time, 'percentage_class': percentage_class})
 
 @login_required
 def profile(request):
@@ -170,13 +190,29 @@ def profile(request):
 
             user_teams_dictionary[team] = [team_flag,shares,round(team_price,3), round(current_investment, 2)]
 
+    historical_investments = HistoricalInvestment.objects.all().filter(user=user)
+
+    historical_investment_list = []
+
+    for investment in historical_investments:
+
+        year = investment.datetime.year
+        month = investment.datetime.month -1
+        day = investment.datetime.day - 1
+
+        investment_list = []
+
+        investment_list.extend((year,month,day,float(round(investment.total_value_of_investments,2)),float(round(investment.total_cash_avaliable,2))))
+
+        historical_investment_list.append(investment_list)
+
 
     if len(user_teams_dictionary) == 0:
         empty_profile = True
     else:
         empty_profile = False
 
-    return render(request,'profile.html', context={'user_teams': user_teams_dictionary, 'empty_profile':empty_profile})
+    return render(request,'profile.html', context={'user_teams': user_teams_dictionary, 'empty_profile':empty_profile, 'chart_data':historical_investment_list})
 
 @login_required
 def leaderboard(request):

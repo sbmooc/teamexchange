@@ -37,6 +37,10 @@ body {
 	margin: 0
 }
 
+#chart_div{
+	margin-bottom: 2em;
+}
+
 .individual_fixture table{
 	margin: 0 auto
 }
@@ -133,7 +137,9 @@ label[for=id_login] {
 #base_header_background {
 	width: 800px;
 	position: fixed;
-	flex: column
+	flex-direction: column;
+	z-index: 1
+
 }
 
 @media(max-width: 800px) {
