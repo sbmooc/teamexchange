@@ -9,7 +9,7 @@
           {% else %}
 
           <table class="pure-table pure-table-horizontal team-table">
-            <!-- <div id="chart_div"></div> -->
+            <div id="chart_div"></div>
             <thead>
                 <tr>
                     <th><p>Team</p></th>
@@ -46,15 +46,14 @@ function drawBasic() {
 
       var data = new google.visualization.DataTable();
       data.addColumn('date', 'Date');
-      data.addColumn('number', 'In wallet');
       data.addColumn('number', 'Invested');
-
+      data.addColumn('number', 'In wallet');
 
 			/* Dummy data */
       data.addRows([
         {% autoescape off %}
         {% for day in chart_data %}
-        [new Date({{day.0}}, {{day.1}}, {{day.2}}), {v: {{day.3}}, f: '£20'}, {v: {{day.4}}, f: '£0'}],
+        [new Date({{day.0}}, {{day.1}}, {{day.2}}), {v: {{day.3}}, f: '£{{day.3}}'}, {v: {{day.4}}, f: '£{{day.4}}'}],
         {% endfor %}
         {% endautoescape %}
       ]);
@@ -69,7 +68,7 @@ function drawBasic() {
       var options = {
       	/* width: 600,
       	height: 300, */
-        chartArea: {'width': '80%', 'height': '80%'},
+        chartArea: {'width': '80%', 'height': '65%'},
         backgroundColor: '#42515A',
       	legend: {position: 'top', textStyle: {color: 'FFFFFF'}},
       	isStacked: true,
