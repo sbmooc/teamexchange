@@ -122,19 +122,19 @@ def team(request, team_code):
 
         closing_values = ClosingValue.objects.all().filter(team_code=team)
 
-        closing_value_list = []
-
-        for value in closing_values:
-
-            year = value.date_time.year
-            month = value.date_time.month -1
-            day = value.date_time.day
-
-            closing_value_list = []
-
-            investment_list.extend((year,month,day,float(round(investment.total_value_of_investments,2)),float(round(investment.total_cash_avaliable,2))))
-
-            historical_investment_list.append(investment_list)
+        # closing_value_list = []
+        #
+        # for value in closing_values:
+        #
+        #     year = value.date_time.year
+        #     month = value.date_time.month -1
+        #     day = value.date_time.day
+        #
+        #     closing_value_list = []
+        #
+        #     investment_list.extend((year,month,day,float(round(investment.total_value_of_investments,2)),float(round(investment.total_cash_avaliable,2))))
+        #
+        #     historical_investment_list.append(investment_list)
 
 
 
