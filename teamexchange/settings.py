@@ -166,13 +166,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/staticfiles/'
 
 RQ_QUEUES = {
-    'default': {
-        'HOST': 'localhost',
-        'PORT': 6379,
-        'DB': 0,
-        'PASSWORD': '',
-        'DEFAULT_TIMEOUT': 360,
-    },
+    # 'default': {
+    #     'HOST': 'localhost',
+    #     'PORT': 6379,
+    #     'DB': 0,
+    #     'PASSWORD': '',
+    #     'DEFAULT_TIMEOUT': 360,
+    # },
     # 'with-sentinel': {
     #    'SENTINELS': [('localhost', 26736), ('localhost', 26737)],
     #    'MASTER_NAME': 'redismaster',
@@ -180,15 +180,15 @@ RQ_QUEUES = {
     #    'PASSWORD': 'secret',
     #    'SOCKET_TIMEOUT': None,
     # },
-    'high': {
+    'default': {
         'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'), # If you're on Heroku
         'DEFAULT_TIMEOUT': 360,
     },
-    'low': {
-        'HOST': 'localhost',
-        'PORT': 6379,
-        'DB': 0,
-    }
+    # 'low': {
+    #     'HOST': 'localhost',
+    #     'PORT': 6379,
+    #     'DB': 0,
+    # }
 }
 
 try:
