@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'django_rq'
 ]
 
 MIDDLEWARE = [
@@ -105,7 +106,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'teamexchange',
-        'USER': 'oliver',
+        'USER': 'olivermonaghan-coombs',
         'PASSWORD': '',
         'HOST': '',
         'PORT': '',
@@ -164,7 +165,31 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/staticfiles/'
 
-# print(STATIC_ROOT)
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'PASSWORD': '',
+        'DEFAULT_TIMEOUT': 360,
+    },
+    'with-sentinel': {
+       'SENTINELS': [('localhost', 26736), ('localhost', 26737)],
+       'MASTER_NAME': 'redismaster',
+       'DB': 0,
+       'PASSWORD': 'secret',
+       'SOCKET_TIMEOUT': None,
+    },
+    'high': {
+        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'), # If you're on Heroku
+        'DEFAULT_TIMEOUT': 500,
+    },
+    'low': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    }
+}
 
 try:
     from .local_settings import *

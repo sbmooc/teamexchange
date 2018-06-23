@@ -27,3 +27,7 @@ urlpatterns = [
     path('teamapp/', include('teamapp.urls')),
     path('', RedirectView.as_view(url='/teamapp/')),
     ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += [
+    path('django-rq/', include('django_rq.urls'))
+]

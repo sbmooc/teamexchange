@@ -9,6 +9,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from decimal import *
 import pytz
 
+import django_rq
+
+
 class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -19,20 +22,33 @@ class Profile(models.Model):
     def users_teams_investments(self):
 
         # all_investments_by_user = Investment.objects.filter(user=self).values('id')
-        new_all_investments_by_user = Investment.objects.filter(user=self).all()
+        all_investments_by_user = Investment.objects.filter(user=self).all()
         # for investment in new_all_investments_by_user:
         #     print(investment.id)
-        all_teams_by_user = Investment.objects.filter(user=self).values('team_code')
+        all_teams_by_user = []
+        for investment in all_investments_by_user:
+            all_teams_by_user.append(investment.team_code)
+            print(investment)
+        # print(all_investments_by_user)
+        # all_teams_by_user = Investment.objects.filter(user=self).values('team_code')
         # print(all_teams_by_user)
         # user_teams = {x['team_code']: 0 for x in all_teams_by_user}
 
-        new_user_teams = {x['team_code']: 0 for x in all_teams_by_user}
+        new_user_teams = {team.team_code: 0 for team in all_teams_by_user}
 
         # for investment in all_investments_by_user:
         #     user_teams[Investment.objects.get(id=investment['id']).team_code.team_code] += Investment.objects.get(id=investment['id']).number_shares * Investment.objects.get(id=investment['id']).transaction_type
 
-        for investment in new_all_investments_by_user:
+        for investment in all_investments_by_user:
             new_user_teams[investment.team_code.team_code] += investment.number_shares * investment.transaction_type
+
+        # new_new_user_teams = {}
+        #
+        # for team, investment in new_user_teams.items():
+        #
+        #     if investment > 0:
+        #          new_new_user_teams[team] = investment
+
 
         return new_user_teams
 
@@ -48,7 +64,7 @@ class Profile(models.Model):
         all_teams = Team.objects.all()
 
         for key, quant in user_teams.items():
-            total_investment += Team.objects.get(team_code=key).current_price * quant
+            total_investment += all_teams.get(team_code=key).current_price * quant
 
         return total_investment
 
@@ -456,7 +472,7 @@ def update_total_no_shares(sender, instance, created, **kwargs):
     team.number_of_shares_held = new_shares
     team.save()
 
-def update_shares_for_users(team_code):
+def update_shares_for_users(team1, team2):
 
     all_users = Profile.objects.all()
 
@@ -466,20 +482,16 @@ def update_shares_for_users(team_code):
         users_investments = user.users_teams_investments()
         all_users_dictionary[user] = users_investments
 
-    # print(all_users_dictionary)
-
     for user, teams in all_users_dictionary.items():
-        # print(team_code)
-        # print(teams)
-        if team_code.team_code in teams:
+        if team1.team_code in teams:
             user_to_update = Profile.objects.get(user=user.user)
-            # print(user_to_update)
-            # print(user_to_update.total_invested)
             user_to_update.total_invested = user_to_update.users_total_investments()
-            # print(user_to_update)
-            # print(user_to_update.total_invested)
-            # print(user_to_update)
             user_to_update.save()
+        elif team2.team_code in teams:
+            user_to_update = Profile.objects.get(user=user.user)
+            user_to_update.total_invested = user_to_update.users_total_investments()
+            user_to_update.save()
+
 
 @receiver(post_save, sender=Investment)
 def update_users_investments(sender, instance, created, **kwargs):
@@ -504,8 +516,8 @@ def init_winner(sender, instance, **kwargs):
             elif Fixture.objects.get(id=instance.id).winner == None and instance.winner != None:
                 new_prices = Fixture.recalculate_share_prices_win(instance)
                 Fixture.update_share_prices(new_prices)
-            update_shares_for_users(instance.team_1)
-            update_shares_for_users(instance.team_2)
+            django_rq.enqueue(update_shares_for_users,instance.team_1, instance.team_2)
+            # update_shares_for_users(instance.team_2)
             deposit_closing_value(instance.team_1)
             deposit_closing_value(instance.team_2)
         except ObjectDoesNotExist:
