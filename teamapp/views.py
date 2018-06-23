@@ -250,6 +250,7 @@ def leaderboard(request):
 
     return render(request,'leaderboard.html',context={'users':leaderboard,'money_in_game':money_in_game,'number_of_users':number_of_users})
 
+@login_required
 def fixtures(request):
 
     all_fixtures = Fixture.objects.all().order_by('date_time_fixture')
