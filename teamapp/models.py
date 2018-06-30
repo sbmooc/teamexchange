@@ -98,7 +98,7 @@ class Team(models.Model):
             else:
                 return True
         except TypeError:
-            return False
+            return True
 
     def next_fixture(self):
         if self.eliminated:
