@@ -363,7 +363,7 @@ class Fixture(models.Model):
         loser_share_price = Team.objects.get(team_code=loser.team_code).current_price
 
         winner_new_share_price = loser_value/winner_no_shares + winner_share_price
-        if percentage == 1:
+        if percentage == Decimal(1):
             loser_new_share_price = 0
         else:
             loser_new_share_price = loser_value/loser_no_shares
@@ -497,7 +497,6 @@ def init_winner(sender, instance, **kwargs):
                 new_prices = Fixture.recalculate_share_prices_win(instance)
                 Fixture.update_share_prices(new_prices)
             django_rq.enqueue(update_shares_for_users,instance.team_1, instance.team_2)
-            # update_shares_for_users(instance.team_2)
             deposit_closing_value(instance.team_1)
             deposit_closing_value(instance.team_2)
         except ObjectDoesNotExist:

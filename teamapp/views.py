@@ -256,21 +256,10 @@ def fixtures(request):
     today = datetime.datetime.now().date()
     fixtures_dictionary = {}
 
-    # for fixture in all_fixtures:
-    #     id = fixture.id
-    #     if fixture.date_time_fixture.date() == today:
-    #
-    #         fixture_is_today = True
-    #         fixtures_dictionary[id] =  {'fixture_is_today':fixture_is_today}
-    #         break
-
 
     user = Profile.objects.get(user=request.user)
 
     counter = 1
-
-
-
 
     for fixture in all_fixtures:
 
@@ -288,6 +277,7 @@ def fixtures(request):
         date_time = fixture.date_time_fixture + datetime.timedelta(hours=1)
         team_1 = Team.objects.get(team_code=fixture.team_1)
         team_2 = Team.objects.get(team_code=fixture.team_2)
+        is_knockout = False
         team_1_image = team_1.image
         team_2_image = team_2.image
         team_1 = fixture.team_1
@@ -308,6 +298,11 @@ def fixtures(request):
             team_1_goals = None
             team_2_goals = None
 
+        if fixture.round == 'gp':
+            is_knockout = False
+        else:
+            is_knockout = True
+
 
 
         fixtures_dictionary[id] = {'date_time':date_time,
@@ -320,6 +315,7 @@ def fixtures(request):
                                    'fixture_complete':fixture_complete,
                                     'team_1_goals':team_1_goals,
                                   'team_2_goals':team_2_goals,
+                                  'is_knockout': is_knockout,
                                   'fixture_is_today':fixture_is_today}
 
         if team_1.is_trading_open() is not True and team_2.is_trading_open() is not True:
@@ -366,8 +362,12 @@ def fixtures(request):
                 team_1_draw_change = ((new_value - team_1_total) / team_1_total) * user_team_1_investment
                 team_2_draw_change = ((new_value - team_2_total) / team_2_total) * user_team_2_investment
 
-                team_1_loss_change = (user_team_1_investment - ((round_percentage) * user_team_1_investment)) * -1
-                team_2_loss_change = (user_team_2_investment - ((round_percentage) * user_team_2_investment)) * -1
+                if round == 'gp':
+                    team_1_loss_change = (user_team_1_investment - ((round_percentage) * user_team_1_investment)) * -1
+                    team_2_loss_change = (user_team_2_investment - ((round_percentage) * user_team_2_investment)) * -1
+                else:
+                    team_1_loss_change = user_team_1_investment * -1
+                    team_2_loss_change = user_team_2_investment * -1
 
 
                 fixtures_dictionary[id].update({'team_1_win' : team_1_win_change,

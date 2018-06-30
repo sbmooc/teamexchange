@@ -46,7 +46,9 @@
           <td> £{{data.team_2_investment|floatformat:2}}</td>
         </tr>
         <tr> <td> Win </td> <td> {{data.team_1_win|floatformat:2}}</td>  <td>  {{data.team_2_win|floatformat:2}}</td></tr>
+        {% if not data.is_knockout %}
         <tr> <td> Draw </td> <td> {{data.team_1_draw|floatformat:2}}</td>  <td> {{data.team_2_draw|floatformat:2}}</td></tr>
+        {% endif %}
         <tr> <td> Lose </td> <td> {{data.team_1_loss|floatformat:2}}</td>  <td> {{data.team_2_loss|floatformat:2}}</td></tr>
         {% else %}
         <tr> <td colspan = 3 style='background: black; color: white'>Trading closes 15 mins before K.O </td></tr>
