@@ -21,40 +21,20 @@ class Profile(models.Model):
 
     def users_teams_investments(self):
 
-        # all_investments_by_user = Investment.objects.filter(user=self).values('id')
         all_investments_by_user = Investment.objects.filter(user=self).all()
-        # for investment in new_all_investments_by_user:
-        #     print(investment.id)
+
         all_teams_by_user = []
         for investment in all_investments_by_user:
             all_teams_by_user.append(investment.team_code)
-            print(investment)
-        # print(all_investments_by_user)
-        # all_teams_by_user = Investment.objects.filter(user=self).values('team_code')
-        # print(all_teams_by_user)
-        # user_teams = {x['team_code']: 0 for x in all_teams_by_user}
+            # print(investment)
 
         new_user_teams = {team.team_code: 0 for team in all_teams_by_user}
-
-        # for investment in all_investments_by_user:
-        #     user_teams[Investment.objects.get(id=investment['id']).team_code.team_code] += Investment.objects.get(id=investment['id']).number_shares * Investment.objects.get(id=investment['id']).transaction_type
 
         for investment in all_investments_by_user:
             new_user_teams[investment.team_code.team_code] += investment.number_shares * investment.transaction_type
 
-        # new_new_user_teams = {}
-        #
-        # for team, investment in new_user_teams.items():
-        #
-        #     if investment > 0:
-        #          new_new_user_teams[team] = investment
-
-
         return new_user_teams
 
-        # print(user_teams)
-
-        # return user_teams
 
     def users_total_investments(self):
 

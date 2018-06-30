@@ -71,14 +71,11 @@ def index(request):
 
     for team in teams:
 
-        if team.is_trading_open():
-            total_invested = round(team.current_price * team.number_of_shares_held,2)
-        else:
-            total_invested = "Trading open"
+        if not team.eliminated:
 
-        percentage_change = percentage_change_string(share_price_change(team))
+            percentage_change = percentage_change_string(share_price_change(team))
 
-        team_dictionary[team.team_code] = [team.image, round(team.current_price,3), percentage_change]
+            team_dictionary[team.team_code] = [team.image, round(team.current_price,3), percentage_change]
 
 
 
@@ -106,8 +103,9 @@ def team(request, team_code):
             else:
                 next_fixture_opponent = next_fixture['team_1_id']
 
-        next_fixture_time = next_fixture['date_time_fixture'] + datetime.timedelta(hours=1)
-        next_fixture_time = next_fixture_time.strftime('%d/%m %H:%M')
+            next_fixture_time = next_fixture['date_time_fixture'] + datetime.timedelta(hours=1)
+            next_fixture_time = next_fixture_time.strftime('%d/%m %H:%M')
+
 
 
         user_profile = Profile.objects.get(user=user)
