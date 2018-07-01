@@ -91,14 +91,17 @@ class Team(models.Model):
 
     def is_trading_open(self):
 
-        try:
-            time_of_cut_off = self.next_fixture()['date_time_fixture'] - datetime.timedelta(minutes=15)
-            if datetime.datetime.now(datetime.timezone.utc) > time_of_cut_off:
-                return False
-            else:
+        if self.eliminated:
+            return False
+        else:
+            try:
+                time_of_cut_off = self.next_fixture()['date_time_fixture'] - datetime.timedelta(minutes=15)
+                if datetime.datetime.now(datetime.timezone.utc) > time_of_cut_off:
+                    return False
+                else:
+                    return True
+            except TypeError:
                 return True
-        except TypeError:
-            return True
 
     def next_fixture(self):
         if self.eliminated:
