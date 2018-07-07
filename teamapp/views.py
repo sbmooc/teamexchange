@@ -256,7 +256,6 @@ def fixtures(request):
     today = datetime.datetime.now().date()
     fixtures_dictionary = {}
 
-
     user = Profile.objects.get(user=request.user)
 
     counter = 1
@@ -284,8 +283,6 @@ def fixtures(request):
         team_2 = fixture.team_2
         team_1_price = team_1.current_price
         team_2_price = team_2.current_price
-
-
 
 
         if fixture.winner != None:
@@ -318,75 +315,76 @@ def fixtures(request):
                                   'is_knockout': is_knockout,
                                   'fixture_is_today':fixture_is_today}
 
-        if team_1.is_trading_open() is not True and team_2.is_trading_open() is not True:
+        if not team_1.eliminated and not team_2.eliminated:
+            if team_1.is_trading_open() is not True and team_2.is_trading_open() is not True:
 
-            try:
-                user_shares_team_1 = user.users_teams_investments()[team_1.team_code]
-            except KeyError:
-                user_shares_team_1 = 0
+                try:
+                    user_shares_team_1 = user.users_teams_investments()[team_1.team_code]
+                except KeyError:
+                    user_shares_team_1 = 0
 
-            try:
-                user_shares_team_2 = user.users_teams_investments()[team_2.team_code]
-            except KeyError:
-                user_shares_team_2 = 0
+                try:
+                    user_shares_team_2 = user.users_teams_investments()[team_2.team_code]
+                except KeyError:
+                    user_shares_team_2 = 0
 
-            user_team_1_investment = user_shares_team_1 * team_1_price
-            user_team_2_investment = user_shares_team_2 * team_2_price
+                user_team_1_investment = user_shares_team_1 * team_1_price
+                user_team_2_investment = user_shares_team_2 * team_2_price
 
-            trading_is_closed = True
+                trading_is_closed = True
 
-            team_1_shares = team_1.number_of_shares_held
-            team_2_shares = team_2.number_of_shares_held
-
-
-            team_1_total = team_1_shares * team_1_price
-            team_2_total = team_2_shares * team_2_price
-
-            round = fixture.round
-
-            if round == 'gp':
-                round_percentage = Decimal(0.5)
-            else:
-                round_percentage = Decimal(1)
+                team_1_shares = team_1.number_of_shares_held
+                team_2_shares = team_2.number_of_shares_held
 
 
-            if team_1_total == 0 or team_2_total == 0:
-                no_value_in_one_team = True
+                team_1_total = team_1_shares * team_1_price
+                team_2_total = team_2_shares * team_2_price
 
-            else:
-                team_1_win_change = ((((team_2_total * round_percentage) + team_1_total) - team_1_total) / team_1_total) * user_team_1_investment
-                team_2_win_change = ((((team_1_total * round_percentage) + team_2_total) - team_2_total) / team_2_total) * user_team_2_investment
-
-
-                new_value = (team_1_total + team_2_total)/ 2
-                team_1_draw_change = ((new_value - team_1_total) / team_1_total) * user_team_1_investment
-                team_2_draw_change = ((new_value - team_2_total) / team_2_total) * user_team_2_investment
+                round = fixture.round
 
                 if round == 'gp':
-                    team_1_loss_change = (user_team_1_investment - ((round_percentage) * user_team_1_investment)) * -1
-                    team_2_loss_change = (user_team_2_investment - ((round_percentage) * user_team_2_investment)) * -1
+                    round_percentage = Decimal(0.5)
                 else:
-                    team_1_loss_change = user_team_1_investment * -1
-                    team_2_loss_change = user_team_2_investment * -1
+                    round_percentage = Decimal(1)
 
 
-                fixtures_dictionary[id].update({'team_1_win' : team_1_win_change,
-                                           'team_2_win': team_2_win_change,
-                                           'team_1_draw': team_1_draw_change,
-                                           'team_2_draw': team_2_draw_change,
-                                           'team_1_loss': team_1_loss_change,
-                                           'team_2_loss': team_2_loss_change,
-                                           'team_1_total':team_1_total,
-                                           'team_2_total':team_2_total,
-                                           'trading_is_closed' :trading_is_closed,
-                                            'team_1_investment': user_team_1_investment,
-                                            'team_2_investment': user_team_2_investment})
+                if team_1_total == 0 or team_2_total == 0:
+                    no_value_in_one_team = True
 
-        else:
+                else:
+                    team_1_win_change = ((((team_2_total * round_percentage) + team_1_total) - team_1_total) / team_1_total) * user_team_1_investment
+                    team_2_win_change = ((((team_1_total * round_percentage) + team_2_total) - team_2_total) / team_2_total) * user_team_2_investment
 
-            trading_is_closed = False
 
-            fixtures_dictionary[id].update({'trading_is_closed' :trading_is_closed })
+                    new_value = (team_1_total + team_2_total)/ 2
+                    team_1_draw_change = ((new_value - team_1_total) / team_1_total) * user_team_1_investment
+                    team_2_draw_change = ((new_value - team_2_total) / team_2_total) * user_team_2_investment
+
+                    if round == 'gp':
+                        team_1_loss_change = (user_team_1_investment - ((round_percentage) * user_team_1_investment)) * -1
+                        team_2_loss_change = (user_team_2_investment - ((round_percentage) * user_team_2_investment)) * -1
+                    else:
+                        team_1_loss_change = user_team_1_investment * -1
+                        team_2_loss_change = user_team_2_investment * -1
+
+
+                    fixtures_dictionary[id].update({'team_1_win' : team_1_win_change,
+                                               'team_2_win': team_2_win_change,
+                                               'team_1_draw': team_1_draw_change,
+                                               'team_2_draw': team_2_draw_change,
+                                               'team_1_loss': team_1_loss_change,
+                                               'team_2_loss': team_2_loss_change,
+                                               'team_1_total':team_1_total,
+                                               'team_2_total':team_2_total,
+                                               'trading_is_closed' :trading_is_closed,
+                                                'team_1_investment': user_team_1_investment,
+                                                'team_2_investment': user_team_2_investment})
+
+            else:
+
+                trading_is_closed = False
+
+                fixtures_dictionary[id].update({'trading_is_closed':trading_is_closed })
 
 
 

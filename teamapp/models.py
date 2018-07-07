@@ -41,13 +41,10 @@ class Profile(models.Model):
         total_investment = 0
 
         user_teams = self.users_teams_investments()
-        all_teams = Team.objects.filter(elimitated=False).all()
+        all_teams = Team.objects.all()
 
         for key, quant in user_teams.items():
-            try:
-                total_investment += all_teams.get(team_code=key).current_price * quant
-            except KeyError:
-                continue
+            total_investment += all_teams.get(team_code=key).current_price * quant
 
         return total_investment
 
