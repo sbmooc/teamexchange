@@ -40,8 +40,10 @@ def user_value_change(user):
     # print(last_total)
     current_total = current_cash + current_investments_value
     # print(current_total)
-
-    percentage_change = (current_total - last_total)/last_total
+    try:
+        percentage_change = (current_total - last_total)/last_total
+    except DivisionByZero:
+        percentage_change = 0
 
     return round(percentage_change,2) * 100
 
